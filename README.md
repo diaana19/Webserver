@@ -5,7 +5,7 @@
 ![HTTP](https://img.shields.io/badge/HTTP-1.1-green.svg)
 ![42](https://img.shields.io/badge/42-Project-orange.svg)
 
-This project has been created by **dirituay**, **vali**, and **rmarcas-** as part of the 42 school core curriculum.
+This project has been created as part of the 42 curriculum by **dirituay**, **vali**, and **rmarcas-**.
 
 ---
 
