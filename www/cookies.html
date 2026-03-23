@@ -1,0 +1,143 @@
+<!-- cookies.html -->
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Cookie Tests - Webserv</title>
+    <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+    <header class="navbar shadow-nav">
+        <h2 class="logo2">Webserv</h2>
+        <nav>
+            <a href="/" class="dark-link">Home</a>
+            <a href="/cgi.html" class="dark-link">CGI Tests</a>
+            <a href="/#tests" class="dark-link">Tests</a>
+        </nav>
+    </header>
+
+    <div class="cgi-page">
+        <div class="content-wrapper">
+            <h1>🍪 Cookie & Session Tests</h1>
+            <p class="subtitle">Test cookie parsing, session management, and authentication</p>
+
+            <h2 class="section-title">🔐 Authentication</h2>
+            <div class="cgi-grid">
+                <!-- TEST 1: LOGIN -->
+                <div class="test-card">
+                    <span class="tag tag-post">POST</span>
+                    <h2>Login (Create Session)</h2>
+                    <p>Login with username/password. Sets session cookie on success.</p>
+                    <form method="POST" action="/cgi-bin/login.py" class="cgi-form">
+                        <input type="text" name="username" placeholder="Username" value="admin" required>
+                        <input type="password" name="password" placeholder="Password" value="secret123" required>
+                        <button type="submit" class="test-btn">Login</button>
+                    </form>
+                    <p style="margin-top:10px; font-size:12px; color:#8a97b0;">
+                        Try: <strong>admin</strong> / <strong>secret123</strong>
+                    </p>
+                </div>
+
+                <!-- TEST 2: DASHBOARD (requires login) -->
+                <div class="test-card">
+                    <span class="tag tag-get">GET</span>
+                    <h2>Dashboard (Protected)</h2>
+                    <p>Access dashboard. Requires valid session cookie from login.</p>
+                    <a class="test-btn" href="/cgi-bin/dashboard.py">View Dashboard</a>
+                    <p style="margin-top:10px; font-size:12px; color:#8a97b0;">
+                        ⚠️ Login first to access
+                    </p>
+                </div>
+
+                <!-- TEST 3: LOGOUT -->
+                <div class="test-card">
+                    <span class="tag tag-post">POST</span>
+                    <h2>Logout (Destroy Session)</h2>
+                    <p>Logout and destroy session cookie.</p>
+                    <form method="POST" action="/cgi-bin/logout.py" class="cgi-form">
+                        <button type="submit" class="test-btn">Logout</button>
+                    </form>
+                </div>
+            </div>
+
+            <h2 class="section-title">🎨 Preferences</h2>
+            <div class="cgi-grid">
+                <!-- TEST 4: SET THEME -->
+                <div class="test-card">
+                    <span class="tag tag-post">POST</span>
+                    <h2>Set Theme Cookie</h2>
+                    <p>Save theme preference in a cookie (dark/light mode).</p>
+                    <form method="POST" action="/cgi-bin/set_theme.py" class="cgi-form">
+                        <select name="theme" style="width:100%; padding:10px; margin-bottom:8px; border:1.5px solid rgba(144,200,246,0.4); border-radius:10px; font-family:'Sora',sans-serif; background:rgba(255,255,255,0.8);">
+                            <option value="light">☀️ Light Mode</option>
+                            <option value="dark">🌙 Dark Mode</option>
+                            <option value="blue">💙 Blue Theme</option>
+                        </select>
+                        <button type="submit" class="test-btn">Save Theme</button>
+                    </form>
+                </div>
+
+                <!-- TEST 5: READ COOKIES -->
+                <div class="test-card">
+                    <span class="tag tag-get">GET</span>
+                    <h2>Show All Cookies</h2>
+                    <p>Displays all cookies sent by your browser.</p>
+                    <a class="test-btn" href="/cgi-bin/show_cookies.py">View Cookies</a>
+                </div>
+
+                <!-- TEST 6: SHOPPING CART -->
+                <div class="test-card">
+                    <span class="tag tag-post">POST</span>
+                    <h2>Shopping Cart</h2>
+                    <p>Add items to cart stored in cookies.</p>
+                    <form method="POST" action="/cgi-bin/add_to_cart.py" class="cgi-form">
+                        <input type="text" name="item" placeholder="Item name" value="MacBook Pro" required>
+                        <input type="number" name="quantity" placeholder="Quantity" value="1" min="1" required>
+                        <button type="submit" class="test-btn">Add to Cart</button>
+                    </form>
+                </div>
+            </div>
+
+            <h2 class="section-title">📊 Cookie Tests</h2>
+            <div class="cgi-grid">
+                <!-- TEST 7: MULTIPLE COOKIES -->
+                <div class="test-card">
+                    <span class="tag tag-post">POST</span>
+                    <h2>Set Multiple Cookies</h2>
+                    <p>Sets 3 cookies at once (name, email, age).</p>
+                    <form method="POST" action="/cgi-bin/set_multiple.py" class="cgi-form">
+                        <input type="text" name="name" placeholder="Your name"  required>
+                        <input type="email" name="email" placeholder="Email" required>
+                        <input type="number" name="age" placeholder="Age"  required>
+                        <button type="submit" class="test-btn">Set Cookies</button>
+                    </form>
+                </div>
+
+                <!-- TEST 8: COOKIE EXPIRATION -->
+                <div class="test-card">
+                    <span class="tag tag-get">GET</span>
+                    <h2>Persistent Cookie</h2>
+                    <p>Sets a cookie that expires in 30 days.</p>
+                    <a class="test-btn" href="/cgi-bin/persistent_cookie.py">Set Long Cookie</a>
+                </div>
+
+                <!-- TEST 9: DELETE COOKIES -->
+                <div class="test-card">
+                    <span class="tag tag-danger">DELETE</span>
+                    <h2>Clear All Cookies</h2>
+                    <p>Deletes all cookies by setting Max-Age=0.</p>
+                    <form method="POST" action="/cgi-bin/clear_cookies.py" class="cgi-form">
+                        <button type="submit" class="test-btn" style="background:linear-gradient(135deg,#f87171,#dc2626);">Clear Cookies</button>
+                    </form>
+                </div>
+            </div>
+
+            <div class="back-section">
+                <a href="/" class="btn-back">← Back to Home</a>
+            </div>
+        </div>
+    </div>
+
+    <footer><p>Webserv Project | 42 School</p></footer>
+</body>
+</html>

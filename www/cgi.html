@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>CGI Tests - Webserv</title>
+    <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+    <header class="navbar">
+        <h2 class="logo2">Webserv</h2>
+        <nav>
+            <a href="/" class="dark-link">Home</a>
+            <a href="/#tests" class="dark-link">Tests</a>
+        </nav>
+    </header>
+
+    <div class="cgi-page">
+        <div class="content-wrapper">
+            <h1>🧪 CGI Testing</h1>
+            <p class="subtitle">All CGI scripts — Python, PHP and Bash</p>
+
+            <h2 class="section-title">🐍 Python Scripts</h2>
+            <div class="cgi-grid">
+                <div class="test-card">
+                    <span class="tag tag-get">GET</span>
+                    <h2>Hello Python</h2>
+                    <p>Basic test — verifies CGI execution works.</p>
+                    <a class="test-btn" href="/cgi-bin/hello.py">Run</a>
+                </div>
+                <div class="test-card">
+                    <span class="tag tag-get">GET</span>
+                    <h2>Environment Variables</h2>
+                    <p>Shows all CGI env vars your server is setting.</p>
+                    <a class="test-btn" href="/cgi-bin/env.py">Run</a>
+                </div>
+                <div class="test-card">
+                    <span class="tag tag-get">GET</span>
+                    <h2>Query String</h2>
+                    <p>Passes ?name=diana&amp;age=24 and parses parameters.</p>
+                    <a class="test-btn" href="/cgi-bin/query.py?name=diana&age=24">Run</a>
+                </div>
+                <div class="test-card">
+                    <span class="tag tag-get">GET</span>
+                    <h2>Large Output (~100KB)</h2>
+                    <p>Generates 100KB of HTML. Tests large CGI output.</p>
+                    <a class="test-btn" href="/cgi-bin/large_output.py">Run</a>
+                </div>
+                <div class="test-card">
+                    <span class="tag tag-post">POST</span>
+                    <h2>POST Body (Python)</h2>
+                    <p>Sends form data via POST and reads from stdin.</p>
+                    <form method="POST" action="/cgi-bin/post.py" class="cgi-form">
+                        <input type="text" name="name" placeholder="Your name" required>
+                        <input type="text" name="city" placeholder="Your city" required>
+                        <button type="submit" class="test-btn">Send</button>
+                    </form>
+                </div>
+                <div class="test-card">
+                    <span class="tag tag-get">GET</span>
+                    <span class="tag tag-post">POST</span>
+                    <h2>GET + POST Handler</h2>
+                    <p>Same script handles both methods.</p>
+                    <a class="test-btn" href="/cgi-bin/methods.py?color=blue">GET</a>
+                    <!-- <form method="POST" action="/cgi-bin/methods.py" class="cgi-form" style="margin-top:10px;">
+                        <input type="text" name="color" placeholder="color" value="blue">
+                        <button type="submit" class="test-btn">POST</button>
+                    </form> -->
+                    <form method="POST" action="/cgi-bin/methods.py" class="cgi-form" style="margin-top:10px;">
+                        <input type="text" name="color" placeholder="Enter color" value="blue">
+                        <button type="submit" class="test-btn">Send</button>
+                    </form>
+                </div>
+            </div>
+
+            <h2 class="section-title">🐘 PHP Scripts</h2>
+            <div class="cgi-grid">
+                <div class="test-card">
+                    <span class="tag tag-get">GET</span>
+                    <h2>Hello PHP</h2>
+                    <p>Basic PHP CGI test with environment variables.</p>
+                    <a class="test-btn" href="/cgi-bin/hello.php">Run</a>
+                </div>
+                <div class="test-card">
+                    <span class="tag tag-get">GET</span>
+                    <h2>PHP with Query String</h2>
+                    <p>PHP script receiving GET parameters.</p>
+                    <a class="test-btn" href="/cgi-bin/hello.php?name=diana&city=paris">Run</a>
+                </div>
+            </div>
+
+            <h2 class="section-title">🔧 Bash Scripts</h2>
+            <div class="cgi-grid">
+                <div class="test-card">
+                    <span class="tag tag-get">GET</span>
+                    <h2>Hello Bash</h2>
+                    <p>Basic Bash CGI test with environment variables.</p>
+                    <a class="test-btn" href="/cgi-bin/hello.sh">Run</a>
+                </div>
+                <div class="test-card">
+                    <span class="tag tag-post">POST</span>
+                    <h2>POST Body (Bash)</h2>
+                    <p>Reads POST body from stdin using cat.</p>
+                    <form method="POST" action="/cgi-bin/post.sh" class="cgi-form">
+                        <input type="text" name="name" placeholder="Your name" required>
+                        <input type="text" name="city" placeholder="Your city" required>
+                        <button type="submit" class="test-btn">Send</button>
+                    </form>
+                </div>
+            </div>
+
+            <div class="back-section">
+                <a href="/" class="btn-back">← Back to Home</a>
+            </div>
+        </div>
+    </div>
+
+    <footer><p>Webserv Project | 42 School</p></footer>
+</body>
+</html>
+ 

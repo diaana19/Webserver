@@ -1,0 +1,45 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   StartServer.cpp                                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: dirituay <dirituay@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/02/14 16:08:33 by dianarituay       #+#    #+#             */
+/*   Updated: 2026/03/15 15:03:31 by dirituay         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "StartServer.hpp"
+
+StartServer::StartServer() {
+
+};
+
+StartServer::~StartServer() {
+
+};
+
+bool StartServer::start(std::vector<ServerConfig> &allServers) {
+	EventLoop loop;
+    loop.getAllServers().reserve(allServers.size());
+    for (size_t i = 0; i < allServers.size(); i++) {
+        Server server;
+        if (server.setupSocket(allServers[i].host, allServers[i].port) != 0)
+        {
+            std::cerr << "Error al crear servidor" << std::endl;
+            return (false);
+        }
+        loop.getAllServers().push_back(server);
+	}
+	ClientManager clientManager;
+	
+	loop.addClientManager(&clientManager);
+	LocationPathTransform pathTransform;
+	pathTransform.transform(allServers);
+	if(pathTransform.checkDuppLoc_Iterate(allServers))
+		return (false);
+	loop.setServersConfig(allServers);
+	loop.run();
+	return (true);
+};

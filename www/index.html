@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Webserv Project</title>
+    <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+    <header class="navbar" id="navbar">
+        <h2 class="logo" id="nav-logo">Webserv</h2>
+        <nav id="nav-links">
+            <a href="/">Home</a>
+            <a href="#about">About</a>
+            <a href="#tests">Tests</a>
+        </nav>
+    </header>
+
+    <section class="hero">
+        <div class="hero-container">
+            <div class="hero-text">
+                <h1>Modern Web Server</h1>
+                <p>A simple HTTP server built in C++ supporting CGI, POST requests and file uploads.</p>
+                <a class="btn" href="#tests">Test the Server</a>
+            </div>
+            <div class="hero-image">
+                <img src="/images/hero-img.png" alt="Server Illustration">
+            </div>
+        </div>
+    </section>
+
+    <section id="about" class="section">
+        <h2>About This Project</h2>
+        <p>
+            This Webserv project implements an HTTP server similar to Nginx.
+            It supports multiple HTTP methods, CGI scripts, file uploads and static websites.
+        </p>
+    </section>
+
+    <section id="services" class="section features">
+        <div class="feature">
+            <div style="font-size:36px;margin-bottom:14px;">⚙️</div>
+            <h3>CGI Support</h3>
+            <p>Execute Python, PHP and Bash scripts through CGI.</p>
+        </div>
+        <div class="feature">
+            <div style="font-size:36px;margin-bottom:14px;">📁</div>
+            <h3>File Upload</h3>
+            <p>Upload files to the server using multipart forms.</p>
+        </div>
+        <div class="feature">
+            <div style="font-size:36px;margin-bottom:14px;">🌐</div>
+            <h3>HTTP Methods</h3>
+            <p>Support for GET, POST and DELETE requests.</p>
+        </div>
+    </section>
+
+    <section id="tests" class="tests-section">
+        <h2>🧪 Test the Server</h2>
+        <p class="tests-subtitle">Try all the features of our HTTP server</p>
+        <div class="tests-grid">
+            <div class="test-card">
+                <span class="test-icon">🐍</span>
+                <h3>CGI Scripts</h3>
+                <p>Execute Python CGI scripts with GET and query parameters</p>
+                <a class="test-btn" href="/cgi.html">Test CGI</a>
+            </div>
+            <div class="test-card">
+                <span class="test-icon">📝</span>
+                <h3>Form Submission</h3>
+                <p>Test POST method with contact form data</p>
+                <a class="test-btn" href="/contact.html">Test Form</a>
+            </div>
+
+            <div class="test-card">
+                <span class="test-icon">📁</span>
+                <h3>File Upload</h3>
+                <p>Upload single files using multipart/form-data</p>
+                <a class="test-btn" href="/upload.html">Test Upload</a>
+            </div>
+        </div>
+        <br>
+        <div class="tests-grid" >
+            <div class="test-card">
+                <span class="test-icon">📦</span>
+                <h3>Multiple Files</h3>
+                <p>Upload multiple files at once</p>
+                <a class="test-btn" href="/multiple.html">Test Multiple</a>
+            </div>
+             <div class="test-card">
+                <span class="test-icon">🍪</span>
+                <h3>Cookies</h3>
+                <p>Test the cookies</p>
+                <a class="test-btn" href="/cookies.html">Test Cookies</a>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <p>Webserv Project | 42 School</p>
+    </footer>
+
+    <script>
+        const navbar = document.getElementById('navbar');
+        const logo   = document.getElementById('nav-logo');
+        const links  = document.querySelectorAll('#nav-links a');
+
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 60) {
+                navbar.classList.add('shadow-nav');
+                logo.classList.remove('logo');
+                logo.classList.add('logo2');
+                links.forEach(a => a.classList.add('dark-link'));
+            } else {
+                navbar.classList.remove('shadow-nav');
+                logo.classList.remove('logo2');
+                logo.classList.add('logo');
+                links.forEach(a => a.classList.remove('dark-link'));
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Multiple Files - Webserv</title>
+    <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+    <header class="navbar">
+        <h2 class="logo2">Webserv</h2>
+        <nav>
+            <a href="/" class="dark-link">Home</a>
+            <a href="/#tests" class="dark-link">Tests</a>
+        </nav>
+    </header>
+<div class="cgi-page">
+        <div class="content-wrapper">
+            <!-- <h1>🧪 Upload Delete</h1> -->
+            <!-- <p class="subtitle">All CGI scripts — Python, PHP and Bash</p> -->
+
+            <!-- <h2 class="section-title">🐍 Python Scripts</h2> -->
+            <div class="cgi-grid">
+                <div class="upload-card">
+                    <h1>📦 Multiple Files</h1>
+                    <p class="upload-subtitle">Upload several files at once</p>
+
+                    <form method="POST" action="/upload" enctype="multipart/form-data">
+                        <div class="upload-zone">
+                            <input type="file" name="files" multiple required>
+                            <p>Hold Ctrl / Cmd to select multiple files</p>
+                        </div>
+                        <button type="submit" class="upload-btn">⬆ Upload All Files</button>
+                    </form>
+
+                    <div class="upload-info">
+                        <strong>Instructions</strong>
+                        <ul>
+                            <li>Hold <strong>Ctrl</strong> (or <strong>Cmd</strong> on Mac) to select multiple files</li>
+                            <li>Click "Upload All Files"</li>
+                            <li>All files saved in <code>uploads/</code> directory</li>
+                        </ul>
+                    </div>
+
+                    <div class="back-section">
+                        <a href="/" class="btn-back">← Back to Home</a>
+                    </div>
+                </div>
+
+                
+
+                <div class="upload-card">
+
+                    <h2>DELETE - File Deletion</h2>
+                    <br />
+                    <div method="DELETE" action="/upload" enctype="multipart/form-data">
+                        <div class="upload-zone">
+                            <label for="delete">Select file to delete:</label><br />
+                            <select name="delete" id="delete">
+                                <option value="" disabled selected>Loading files...</option>
+                            </select>
+                            <br /><br />
+                        </div>
+                        <button id="delete-button">Delete File</button>
+                    
+                        <div class="upload-info">
+                            <strong>Instructions</strong>
+                            <ul>
+                                <li>Select a file in the list</li>
+                                <li> <strong>Click</strong>  Delete File</li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                </div>
+
+
+
+            </div>
+
+            <h2 class="section-title">🐘 PHP Scripts</h2>
+            <div class="cgi-grid">
+                <div class="test-card">
+                    <span class="tag tag-get">GET</span>
+                    <h2>Hello PHP</h2>
+                    <p>Basic PHP CGI test with environment variables.</p>
+                    <a class="test-btn" href="/cgi-bin/hello.php">Run</a>
+                </div>
+                <div class="test-card">
+                    <span class="tag tag-get">GET</span>
+                    <h2>PHP with Query String</h2>
+                    <p>PHP script receiving GET parameters.</p>
+                    <a class="test-btn" href="/cgi-bin/hello.php?name=diana&city=paris">Run</a>
+                </div>
+            </div>
+
+            
+
+            <div class="back-section">
+                <a href="/" class="btn-back">← Back to Home</a>
+            </div>
+        </div>
+    </div>
+
+    <footer><p>Webserv Project | 42 School</p></footer>
+    <script src="script.js"></script>
+</body>
+</html>

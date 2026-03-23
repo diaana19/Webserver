@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Form Submitted - Webserv</title>
+    <link rel="stylesheet" href="/styles.css">
+    <style>
+        body { background: linear-gradient(160deg, #e8f4fd 0%, #ede8f5 50%, #f0f4ff 100%); min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; font-family: 'Sora', sans-serif; }
+        .card { max-width: 500px; width: calc(100% - 40px); background: rgba(255,255,255,0.82); backdrop-filter: blur(16px); border-radius: 28px; padding: 52px 40px; box-shadow: 0 8px 32px rgba(140,180,220,0.25); border: 1px solid rgba(255,255,255,0.95); text-align: center; }
+        .icon { font-size: 58px; margin-bottom: 16px; }
+        h1 { font-size: 26px; font-weight: 800; color: #1e2d4a; margin-bottom: 10px; }
+        p { color: #4a5a74; font-size: 15px; margin-bottom: 28px; line-height: 1.6; }
+        .badge { display: inline-block; background: #dcfce7; color: #15803d; font-size: 12px; font-weight: 700; padding: 4px 14px; border-radius: 50px; margin-bottom: 20px; text-transform: uppercase; letter-spacing: 0.8px; }
+        .btn { display: inline-block; padding: 12px 32px; background: linear-gradient(135deg, #90c8f6, #a78ec7); color: white; border-radius: 50px; text-decoration: none; font-weight: 700; font-size: 14px; box-shadow: 0 4px 16px rgba(144,200,246,0.35); transition: transform 0.2s; }
+        .btn:hover { transform: translateY(-2px); }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <div class="icon">✅</div>
+        <span class="badge">Success</span>
+        <h1>Form Submitted!</h1>
+        <p>Your data has been saved successfully.</p>
+        <a href="/" class="btn">← Back to Home</a>
+    </div>
+</body>
+</html>

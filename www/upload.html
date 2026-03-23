@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>File Upload - Webserv</title>
+    <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+    <header class="navbar">
+        <h2 class="logo2">Webserv</h2>
+        <nav>
+            <a href="/" class="dark-link">Home</a>
+            <a href="/#tests" class="dark-link">Tests</a>
+        </nav>
+    </header>
+
+    <div class="upload-page">
+        <div class="upload-card">
+            <h1>📁 Upload File</h1>
+            <p class="upload-subtitle">Upload a single file to the server</p>
+
+            <form method="POST" action="/upload" enctype="multipart/form-data">
+                <div class="upload-zone">
+                    <input type="file" name="file" required>
+                    <p>Image, PDF, text, or any file type</p>
+                </div>
+                <button type="submit" class="upload-btn">⬆ Upload File</button>
+            </form>
+
+            <div class="upload-info">
+                <strong>Instructions</strong>
+                <ul>
+                    <li>Select any file from your computer</li>
+                    <li>Click "Upload File"</li>
+                    <li>File will be saved in <code>uploads/</code> directory</li>
+                </ul>
+            </div>
+
+            <div class="back-section">
+                <a href="/" class="btn-back">← Back to Home</a>
+            </div>
+        </div>
+    </div>
+
+    <footer><p>Webserv Project | 42 School</p></footer>
+</body>
+</html>
