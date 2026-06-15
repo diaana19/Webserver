@@ -1,15 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   LocationParsing.cpp                                :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: vali <vali@student.42.fr>                  +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/01/28 10:11:13 by dianarituay       #+#    #+#             */
-/*   Updated: 2026/03/19 18:55:09 by vali             ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "LocationParsing.hpp"
 
 std::string convertNumberIntoString(int nb) {
@@ -44,7 +32,7 @@ size_t LocationParsing::actualizePos(const std::vector<Token> &tokens) {
 };
 
 void LocationParsing::resetLocationConfig() {
-	// this->newLocationConfig = LocationConfig();
+	
 };
 
 
@@ -88,15 +76,13 @@ void LocationParsing::parseLocation(std::vector<Token>::const_iterator& it) {
 	}
 };
 
-
-
 #include <sys/stat.h>
 
 static bool isDirectory(const std::string &path) {
     struct stat info;
 
     if (stat(path.c_str(), &info) != 0) {
-        // No existe o no se puede acceder
+        
         return false;
     }
 
@@ -116,7 +102,7 @@ bool LocationParsing::parseRootLocation(std::vector<Token>::const_iterator& it) 
 	it++;
 
 	
-	//VALIDATION OF ROOT
+	
 	if(!isDirectory(root)) {
 		throw std::runtime_error("Error line" + convertNumberIntoString(line) + ": invalid root directory in location " + root);
 	}
@@ -173,7 +159,7 @@ bool LocationParsing::parseUploadPath(std::vector<Token>::const_iterator& it) {
 	return (true);
 };
 
-// Make a listing of all file in the directory
+
 bool LocationParsing::parseAutoindex(std::vector<Token>::const_iterator& it) {
 	if (it->type == TOKEN_STRING) {
 		if (it->value == "on")
@@ -195,7 +181,7 @@ bool LocationParsing::parseRedirect_code(std::vector<Token>::const_iterator& it)
 	long long redirectCode;
 	if (it->type == TOKEN_NUMBER) {
 		redirectCode = std::atoll(it->value.c_str());
-		if (redirectCode >= 0 && redirectCode <= 600) // need to see valid code
+		if (redirectCode >= 0 && redirectCode <= 600) 
 			this->newLocationConfig.redirect_code = static_cast<int>(redirectCode);
 	}
 	else if (it->type == TOKEN_PATH) {

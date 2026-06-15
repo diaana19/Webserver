@@ -4,11 +4,9 @@ import sys
 
 print("Content-Type: text/html")
 
-# Leer POST data
 content_length = int(os.environ.get('CONTENT_LENGTH', 0))
 post_data = sys.stdin.read(content_length) if content_length > 0 else ""
 
-# Parsear theme
 params = {}
 for pair in post_data.split('&'):
     if '=' in pair:
@@ -17,7 +15,6 @@ for pair in post_data.split('&'):
 
 theme = params.get('theme', 'light')
 
-# Establecer cookie de tema (expires en 30 días)
 print(f"Set-Cookie: theme={theme}; Path=/; Max-Age=2592000")
 print()
 

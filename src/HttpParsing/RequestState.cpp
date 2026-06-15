@@ -1,25 +1,7 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   RequestState.cpp                                   :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: vali <vali@student.42.fr>                  +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/01/28 10:11:28 by dianarituay       #+#    #+#             */
-/*   Updated: 2026/03/12 19:49:11 by vali             ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "RequestState.hpp"
 
-// RequestState::RequestState(): contentLength(0), hasFinishHeader(false), hasExpect100(false) {
-
-// }
-
 RequestState::RequestState() : status(STILL_GETTING_MSG), readlengthChunked(0), hasFinishReadHeader(false), lastActive(std::time(NULL))
-{
-    // this->status = STILL_GETTING_MSG;
-    // this->lastActive = std::time(NULL);
+{   
 }
 
 RequestState::~RequestState()
@@ -38,9 +20,7 @@ RequestState::RequestState(const RequestState& other)
       httpRequest(other.httpRequest),
       httpResponse(other.httpResponse),
       lastActive(other.lastActive)
-{
-    // this->status = STILL_GETTING_MSG;
-    // this->lastActive = std::time(NULL);
+{    
 };
 
 RequestState& RequestState::operator=(const RequestState& other){
@@ -58,8 +38,8 @@ RequestState& RequestState::operator=(const RequestState& other){
         httpResponse = other.httpResponse;
         lastActive = other.lastActive;
     }
-    // this->status = STILL_GETTING_MSG;
-    // this->lastActive = std::time(NULL);
+    
+    
     return (*this);
 }
 
@@ -169,15 +149,6 @@ void RequestState::setHasFinishReadHeader(bool key)
     this->hasFinishReadHeader = key;
 };
 
-// bool RequestState::getHasConstructMessage() const{
-//     return (this->hasConstructMessage);
-// };
-
-// void RequestState::setHasConstructMessage(bool key){
-//     this->hasConstructMessage = key;
-// };
-
-
 void RequestState::setRequestHttp(const HttpRequest &httpRequest)
 {
     this->httpRequest = httpRequest;
@@ -207,18 +178,3 @@ HttpResponse RequestState::getHttpResponse() const
 {
     return (this->httpResponse);
 };
-// bool RequestState::getHasFinishReadBody() const{
-//     return (this->hasFinishRead);
-// };
-
-// void RequestState::setHasFinishReadBody(bool key) {
-//     this->hasFinishReadBody = key;
-// };
-
-// bool RequestState::getHasExpect100() const{
-//     return (this->hasExpect100);
-// };
-
-// void RequestState::setHasExpect100(bool key) {
-//     this->hasExpect100 = key;
-// };

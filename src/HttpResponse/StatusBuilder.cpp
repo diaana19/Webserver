@@ -1,15 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   StatusBuilder.cpp                                  :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: dianarituay <dianarituay@student.42.fr>    +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/02/17 13:45:53 by dianarituay       #+#    #+#             */
-/*   Updated: 2026/02/17 13:45:55 by dianarituay      ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "StatusBuilder.hpp"
 #include <sstream>
 
@@ -27,18 +15,18 @@ void StatusBuilder :: statusMsgInit()
     _statusMsg[410] = "Gone";
     _statusMsg[411] = "Length Required";
 
-        // Informational 
+        
     _statusMsg[100] = "Continue";
     _statusMsg[101] = "Switching Protocols";
     
-    // Success 
+    
     _statusMsg[200] = "OK";
     _statusMsg[201] = "Created";
     _statusMsg[202] = "Accepted";
     _statusMsg[204] = "No Content";
     _statusMsg[206] = "Partial Content";
     
-    //  Redirection 
+    
     _statusMsg[300] = "Multiple Choices";
     _statusMsg[301] = "Moved Permanently";
     _statusMsg[302] = "Found";
@@ -47,7 +35,7 @@ void StatusBuilder :: statusMsgInit()
     _statusMsg[307] = "Temporary Redirect";
     _statusMsg[308] = "Permanent Redirect";
     
-    // Client Error 
+    
     _statusMsg[400] = "Bad Request";
     _statusMsg[401] = "Unauthorized";
     _statusMsg[403] = "Forbidden";
@@ -63,7 +51,7 @@ void StatusBuilder :: statusMsgInit()
     _statusMsg[418] = "I'm a teapot"; 
     _statusMsg[429] = "Too Many Requests";
     
-    // Server Error 
+    
     _statusMsg[500] = "Internal Server Error";
     _statusMsg[501] = "Not Implemented";
     _statusMsg[502] = "Bad Gateway";
@@ -76,7 +64,7 @@ std::string	StatusBuilder :: getStatusMsg(int code)
 {
     std::map<int, std::string>::iterator it  = _statusMsg.find(code);
 
-    //if go to the final of the map soooo 
+    
     if(it != _statusMsg.end())
         return it->second;
 

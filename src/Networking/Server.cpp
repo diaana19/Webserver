@@ -1,15 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   Server.cpp                                         :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: dirituay <dirituay@student.42.fr>          +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/01/19 12:42:39 by dirituay          #+#    #+#             */
-/*   Updated: 2026/03/15 15:04:26 by dirituay         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "Server.hpp"
 #include "ClientManager.hpp"
 
@@ -75,32 +63,11 @@ int Server :: setupSocket(std::string ipAdress, int port)
 
 void Server :: setupAddress(std::string ipAdress, int port)
 {
-	//struct sockaddr_in : Structure describing an Internet socket address.
-	//INADDR para aceptar los mensajes
 	std::memset(&_addr, 0, sizeof(_addr));
-	// _addr.sin_family = AF_INET;
-	// _addr.sin_addr.s_addr = INADDR_ANY;
-	// //Manejo del puerto, !!!!CAMBIAR A FUNCION DE MANEJO DE VARIOS PUERTOS
-	// _addr.sin_port = htons(8080);
-
 	_addr.sin_family = AF_INET;
 	_addr.sin_addr.s_addr = inet_addr(ipAdress.c_str());
 	_addr.sin_port = htons(port);
 }
-
-//This part could be manage in client and the std::map too
-// long Server :: accept()
-// {
-// 	int _fdClient = ::accept(_fd, NULL, NULL);
-// 	if(_fdClient < 0)
-// 	{
-// 		perror("accept");
-// 		return -1;
-// 	}
-// 	Client	client(_fdClient);
-// 	_clients.insert(std::make_pair(_fdClient, client));
-// 	return (_fdClient);
-// }
 
 int Server :: getFd() const
 {

@@ -1,15 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   EventLoop.cpp                                      :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: dirituay <dirituay@student.42.fr>          +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/01/19 13:16:13 by dirituay          #+#    #+#             */
-/*   Updated: 2026/03/23 12:40:26 by dirituay         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "EventLoop.hpp"
 
 EventLoop::EventLoop():epoll_fd(-1)
@@ -66,16 +54,16 @@ void  signal_handler(int signal){
 };
 
 void EventLoop::startUpSignal() {
-	signal(SIGINT, signal_handler); // CTRL + C
+	signal(SIGINT, signal_handler); 
 	signal(SIGTERM, signal_handler);
-	signal(SIGPIPE, SIG_IGN); // don't crash if broken pipe
+	signal(SIGPIPE, SIG_IGN); 
 };
 
 void EventLoop::startUpCreateEpollfd() {
 	this->epoll_fd = epoll_create1(0);
 	if (epoll_fd == -1)
 	{
-		// throw std::runtime_error("Failed epoll_create1 ");
+		
 		perror("epol_ctl");
 	}
 };
@@ -98,11 +86,11 @@ void EventLoop::checkCgiReadyOrTimeOut() {
 		int clientFd = cgiProc.clientFd;
 		RequestState &currReqState  = this->activeRequests[clientFd];
 		if (it->second.readyToRead && !cgiProc.buffer.empty()) {
-			// waitpid(cgiProc.pid, NULL, WNOHANG);
+			
 			PostHandler postHandler;
 			HttpResponse httpResponse = postHandler.parseOutput(cgiProc.buffer);
 			currReqState.setHttpResponse(httpResponse);
-			// send(clientFd, response.c_str(), response.length(), 0);
+			
 			timed_out.push_back(it->second);
 		}
 		else if (isItTimeOut(it->second.startTime, TIMEOUT_CGI_SEC)) {
@@ -113,7 +101,7 @@ void EventLoop::checkCgiReadyOrTimeOut() {
 			HttpResponse httpResponse;
 			httpResponse.statusCode = 504;
 			currReqState.setHttpResponse(httpResponse);
-			// send(clientFd, response.c_str(), response.length(), 0);
+			
 			timed_out.push_back(it->second);
 		}
 		it++;
@@ -123,7 +111,7 @@ void EventLoop::checkCgiReadyOrTimeOut() {
 		this->runningCgis.erase(timed_out[i].pid);
 		int clientFd = timed_out[i].clientFd;
 		RequestState &currReqState  = this->activeRequests[clientFd];
-		// endingProcess(clientFd);
+		
 		currReqState.setStatus(CAN_BUILD_RESPONSE);
 		turnToEventWrite(clientFd);
 	}
@@ -145,7 +133,7 @@ void EventLoop::readCgiOutPut(int fd, uint32_t eventFlags) {
 	cgi_proc->buffer += cgipipe.readOutputNonBlocking(fd);
 	if (eventFlags & EPOLLHUP) {
 		std::cout << YELLOW << "Time: " << RESET << cgi_proc->startTime << std::endl;
-		// std::cout << "[CGI] Child finished. Output:\n" s<< cgi_proc->buffer << std::endl;
+		
 		cgi_proc->readyToRead = true;
 	}
 };
@@ -186,29 +174,29 @@ void EventLoop::run()
 	while (g_shutdown == 0)
 	{
 		int n = epoll_wait(epoll_fd, events, MAXCLIENT, 1000);
-		for (int i = 0; i < n; i++) // maybe change MAXEVENT x n
+		for (int i = 0; i < n; i++) 
 		{
 			int fd = events[i].data.fd;
 			Server *matchListenServer = findServer_byFdClient(fd);
 
-			if (matchListenServer){ //new client
+			if (matchListenServer){ 
 				addNewClient(fd);
 			}
 			else if (fdIsCgiOutput(fd)) {
-				// std::cout << "Is CgiOutput\n";
+				
 				readCgiOutPut(fd, events[i].events);
 			}
-			else if (events[i].events & EPOLLIN){ //Data of client 
-				// std::cout << "Is handleRead\n";
-				handleRead(fd); // read output with the fd  also parse the header here
+			else if (events[i].events & EPOLLIN){ 
+				
+				handleRead(fd); 
 			} 
-			if (events[i].events & EPOLLOUT){ // Ready to write
-				// std::cout << "Is handlewrite\n";
+			if (events[i].events & EPOLLOUT){ 
+				
     			handleWrite(fd);
-				// endingProcess(fd);
+				
 			}
 			else if (events[i].events & (EPOLLHUP | EPOLLERR)) {
-				// std::cout << "Close client connection\n";
+				
 				removeClient(fd);
 			}
 		}
@@ -298,9 +286,9 @@ void EventLoop::endingProcess(int fd) {
 
 void EventLoop::removeClient(int fd) {
     epoll_ctl(epoll_fd, EPOLL_CTL_DEL, fd, NULL);
-	//close(fd);
+	
 	this->activeRequests.erase(fd);
-	// shutdown(fd, SHUT_WR); // a function to close a connection ?? but i already close it fine???
+	
 	this->_clientManager->removeClient(fd);
 };
 

@@ -1,4 +1,3 @@
-// Function to fetch and display files for deletion
 async function showDeleteOptions() {
   const response = await fetch("/cgi-bin/list_files.php");
   if (response.ok) {
@@ -16,7 +15,6 @@ async function showDeleteOptions() {
   }
 }
 
-// Function to send DELETE request
 async function deleteFile() {
   const selectedFile = document.getElementById("delete").value;
   if (!selectedFile) {
@@ -34,7 +32,6 @@ async function deleteFile() {
   }
 }
 
-// Load files when the page is ready
 window.onload = () => {
   showDeleteOptions();
   document

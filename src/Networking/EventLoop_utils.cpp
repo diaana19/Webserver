@@ -1,15 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   EventLoop_utils.cpp                                :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: vali <vali@student.42.fr>                  +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/01/19 13:16:13 by dirituay          #+#    #+#             */
-/*   Updated: 2026/03/17 20:44:39 by vali             ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "EventLoop.hpp"
 
 std::string getFirstLine(std::string &fullRequest){
@@ -81,7 +69,7 @@ int EventLoop::searchIndexLocation(ServerConfig &serverConfig, std::string &path
     for (size_t i = 0; i < serverConfig.locations.size(); i++) {
         std::string locationUri = serverConfig.locations[i].uri;
         
-        // Match por prefijo (longest prefix match)
+        
         if (path.compare(0, locationUri.length(), locationUri) == 0) {
             if (locationUri.length() > bestMatchLength) {
                 bestMatch = i;

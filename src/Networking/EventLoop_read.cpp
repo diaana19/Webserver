@@ -1,15 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   EventLoop_read.cpp                                 :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: vali <vali@student.42.fr>                  +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/03/15 15:10:42 by dirituay          #+#    #+#             */
-/*   Updated: 2026/03/17 23:14:23 by vali             ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "EventLoop.hpp"
 #include "CookieParser.hpp"
 
@@ -35,7 +23,7 @@ void EventLoop::getMessageInFd(int fd) {
             request.setHeader(request.getBuffer().substr(0, header_end + 4));
             request.setBody(request.getBuffer().substr(header_end + 4));
 			HttpRequest httpRequest = parseHeader(fd, request);
-			//NEW verify if have error in the parsing
+			
 			if(httpRequest.method.empty())
 				return;
 			request.setRequestHttp(httpRequest); 
@@ -48,9 +36,9 @@ void EventLoop::getMessageInFd(int fd) {
 };
 
 HttpRequest EventLoop::parseHeader(int fd, RequestState &currRequestState) {
-	// std::cout << "Header:\n" << activeRequests[fd].getHeader();
+	
 	HttpRequest httpRequest;
-	//IP client
+	
 	Client* client = _clientManager->getClient(fd);
 	if (client != NULL)
 		httpRequest.clientIP = client->getIp();
@@ -62,11 +50,11 @@ HttpRequest EventLoop::parseHeader(int fd, RequestState &currRequestState) {
 	std::string firstLine = getFirstLine(currRequestState.getHeader());
 	if (!lineParser.parse(firstLine, httpRequest)){
 		std::cout << "❌ FAIL" << std::endl;
-		//ADD
+		
 		HttpResponse errorResponse;
 		errorResponse.statusCode = 400;
 
-		//Search severconfig
+		
 		ServerConfig serverConfig = findTheServerConfig(httpRequest);
         httpRequest.serverConfig = serverConfig;
         currRequestState.setRequestHttp(httpRequest);
@@ -75,9 +63,6 @@ HttpRequest EventLoop::parseHeader(int fd, RequestState &currRequestState) {
         turnToEventWrite(fd);
     	return httpRequest;
 	}
-	// std::cout << "✅ PASS - Request line parsed successfully" << std::endl;
-    // printRequest(httpRequest);
-    
     return httpRequest;
 };
 
@@ -93,36 +78,6 @@ ServerConfig EventLoop::findTheServerConfig(HttpRequest &httpRequest) {
 	return (serverConfig);
 }
 
-// void EventLoop::handleRead2(int fd) {
-// 	getMessageInFd(fd); // the header is parse here
-// 	RequestState& currRequestState = activeRequests[fd];
-// 	if (currRequestState.getHasFinishReadHeader())
-// 	{
-// 		HttpRequest httpRequest = currRequestState.getHttpRequest();
-// 		std::map<std::string, std::string>::iterator it =
-// 		httpRequest.headers.find("Content-Length");
-// 		if (it != httpRequest.headers.end())
-// 		{
-// 			size_t contentLength = std::strtoul(it->second.c_str(), NULL, 10);
-// 			if (currRequestState.getBody().size() >= contentLength)
-// 			{
-// 				BodyParser bodyParser;
-// 				bodyParser.parseBody(currRequestState.getBody(), httpRequest);
-
-// 				currRequestState.setRequestHttp(httpRequest);
-// 				turnToEventWrite(fd);
-// 			}
-// 			else if (currRequestState.getBody().size() <= contentLength)
-// 				return ;
-// 		}
-// 		else
-// 		{
-// 			currRequestState.setRequestHttp(httpRequest);
-// 			turnToEventWrite(fd);
-// 		}
-// 	}
-// };
-
 void logSocketData(const std::string &data)
 {
     std::ofstream log("socket_debug.log", std::ios::app | std::ios::binary);
@@ -132,7 +87,6 @@ void logSocketData(const std::string &data)
         std::cerr << "Failed to open debug log\n";
         return;
     }
-
     log.write(data.data(), data.size());
 }
 
@@ -175,18 +129,18 @@ void EventLoop::parseChunked(std::string &wholeBody, RequestState &reqState) {
         size_t consumed = 0;
         std::string chunk = readChunked(wholeBody, reqState, consumed);
         if (consumed == 0) {
-            // std::cout << "FINISH" << std::endl;
+            
             return ;
         }
         if (consumed == std::string::npos) {
             reqState.setReadLengthChunked(std::string::npos);
-            // reqState.setBufferChunked(reqState.getBufferChunked().substr(0, (reqState.getBufferChunked().size() - 1)));
-            // std::cout << "FINAL FINISH" << std::endl;
+            
+            
             return ;
         }
         wholeBody = wholeBody.substr(consumed);
         reqState.setBufferChunked(reqState.getBufferChunked() + chunk);
-        // std::cout << "bufferChunked.size() [ " << reqState.getBufferChunked().size() << " ]" << std::endl;
+        
     }
 }
 
@@ -220,28 +174,18 @@ void EventLoop::receiveChunkedData(int fd, RequestState & currRequestState) {
     }
     if (currRequestState.getBody().find("\r\n\r\n") == std::string::npos)
         return ;
-    // std::cout << currRequestState.getBody() << std::endl;
+    
     parseChunked(currRequestState.getBody(), currRequestState);
     if (currRequestState.getReadLengthChunked() == std::string::npos) {
         currRequestState.setBody(currRequestState.getBufferChunked());
 	    bodyParser.parseBody(currRequestState.getBody(), httpRequest);
-        currRequestState.setStatus(HAS_FINISH_PARSEBODY);
-        // currRequestState.setBufferChunked("");
+        currRequestState.setStatus(HAS_FINISH_PARSEBODY);  
     }
-    // std::ofstream ofs("chunkedOutput", std::ios::binary);
-    // if (!ofs) {
-    //     std::cout << "Failed to open output file: " << std::endl;
-    // } else {
-    //     std::cout << "Succesfully to open output file: "  << std::endl;
-    //     ofs.write(currRequestState.getBody().data(), currRequestState.getBody().size());
-    //     ofs.close();
-    // }
-    // logSocketData(currRequestState.getBody());
 }
 
 void EventLoop::parseWholeReq(int fd, RequestState &currRequestState){
     HttpRequest& httpRequest = currRequestState.getHttpRequest();
-        // printHeaders(httpRequest);
+        
     std::map<std::string, std::string>::iterator it = httpRequest.headers.find("Content-Length");
     std::map<std::string, std::string>::iterator itEncoding = httpRequest.headers.find("Transfer-Encoding");
     if (it != httpRequest.headers.end())
@@ -251,8 +195,8 @@ void EventLoop::parseWholeReq(int fd, RequestState &currRequestState){
 		{
 			ServerConfig serverConfig = findTheServerConfig(httpRequest);
             httpRequest.serverConfig = serverConfig;
-            //std::cout << "contentLength" << contentLength << std::endl;
-            //std::cout << "currRequestState.getBody().size()" << currRequestState.getBody().size() << std::endl;
+            
+            
 			if (serverConfig.clientMaxBodySize > 0 && (contentLength > serverConfig.clientMaxBodySize 
                 || currRequestState.getBody().size() > contentLength))
 			{
@@ -287,22 +231,22 @@ void EventLoop::parseWholeReq(int fd, RequestState &currRequestState){
 void EventLoop::handleRead(int fd) {
     std::map<int, RequestState>::iterator it = activeRequests.find(fd);
     if (it == activeRequests.end()) {
-        //forgot to create a new requestState
+        
         RequestState newReqState;
         this->activeRequests[fd] = newReqState;
     }
-        // RequestState& curr = it->second;
-    // RequestState& currRequestState = activeRequests[fd];
+        
+    
     if (activeRequests[fd].getStatus() == STILL_GETTING_MSG) {
-		// std::cout << "Is getMessageInFd\n";
-        getMessageInFd(fd); // the header is parse here
+		
+        getMessageInFd(fd); 
     }
     if (activeRequests[fd].getStatus() == HAS_FINISH_PARSEHEADER) {
-		// std::cout << "Is parseWholeReq\n";
+		
         parseWholeReq(fd, activeRequests[fd]);
     }
     if (activeRequests[fd].getStatus() == HAS_FINISH_PARSEBODY) {
-		// std::cout << "Is processRequest\n";
+		
         processRequest(fd);
     }
 };

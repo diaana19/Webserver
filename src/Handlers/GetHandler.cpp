@@ -1,15 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   GetHandler.cpp                                     :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: vali <vali@student.42.fr>                  +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/02/17 13:46:04 by dianarituay       #+#    #+#             */
-/*   Updated: 2026/03/08 21:57:49 by vali             ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "GetHandler.hpp"
 #include "PostHandler.hpp"
 #include "StatusBuilder.hpp"
@@ -45,11 +33,11 @@ std::string GetHandler :: buildFilePath(const std::string &root, const std::stri
 {
     std::string path = root;
 
-    //be sure the root finish with /
+    
     if(!path.empty() && path[path.length() - 1] != '/')
         path += "/";
 
-    // delete / start of uri if exiwst
+    
     std::string cleanUri = uri;
     if(!cleanUri.empty() && cleanUri[0] == '/')
         cleanUri = cleanUri.substr(1);
@@ -64,7 +52,7 @@ std::string GetHandler :: findIndexFile(const std::string &dirPath, const std::v
     if(!basePath.empty() && basePath[basePath.length() - 1] != '/')
         basePath += "/";
     
-    // Probar cada index en orden
+    
     for(size_t i = 0; i < indexNames.size(); i++)
     {
         std::string indexPath = basePath + indexNames[i];
@@ -76,7 +64,7 @@ std::string GetHandler :: findIndexFile(const std::string &dirPath, const std::v
         }
     }
     
-    // Ningún index encontrado
+    
     return "";
 }
 
@@ -92,7 +80,7 @@ std::vector<std::string> GetHandler :: listDirectory(const std::string &dirPath)
     {
         std::string name = entry->d_name;
     
-        //ignore . and ,,
+        
         if(name == "." || name == "..")
             continue;
         files.push_back(name);
@@ -127,13 +115,13 @@ std::string GetHandler :: generateDirectoryListing(const std::string &dirPath, c
     html << "    <h1>Index of " << uri << "</h1>\n";
     html << "    <ul>\n";
     
-    // Link al directorio padre
+    
     if(uri != "/")
     {
         html << "        <li><a href=\"..\" class=\"dir\">📁 ../</a></li>\n";
     }
     
-    // Listar archivos y directorios
+    
     for(size_t i = 0; i < files.size(); i++)
     {
         std::string fullPath = dirPath;
@@ -193,22 +181,22 @@ HttpResponse GetHandler :: handle(const HttpRequest &req, const LocationConfig& 
     }
     std::cout << B_CYAN << "[GET] Handling: " << RESET << req.path << std::endl;
 
-    // 1. Construir path completo del archivo
+    
     std::string filePath = buildFilePath(loc.rootLocation, req.path);
     
     std::cout << B_CYAN << "[GET] Looking for file: " << RESET << filePath << std::endl;
     
-    // 2. Verificar si existe
+    
     if(!fileExist(filePath))
     {
         std::cout << RED << "[GET] File not found: " << RESET << filePath << std::endl;
         response.statusCode = 404;
         response.headers["Content-Type"] = "text/html";
-        // response.body = "<html><body><h1>404 Not Found</h1></body></html>";
+        
         return response;
     }
     
-    // 3. Verificar permisos de lectura
+    
     if(!hasReadPermission(filePath))
     {
         std::cout << RED << "[GET] Permission denied: " << RESET << filePath << std::endl;
@@ -218,12 +206,12 @@ HttpResponse GetHandler :: handle(const HttpRequest &req, const LocationConfig& 
         return response;
     }
     
-    // 4. Si es un directorio
+    
     if(isDirectory(filePath))
     {
         std::cout << B_CYAN << "[GET] Path is a directory" << RESET << std::endl;
         
-        // 4.1 Buscar archivo index
+        
         std::string indexPath = findIndexFile(filePath, loc.index);
         
         if(!indexPath.empty())
@@ -236,7 +224,7 @@ HttpResponse GetHandler :: handle(const HttpRequest &req, const LocationConfig& 
             return response;
         }
         
-        // 4.2 Si autoindex está activado, generar listado
+        
         if(loc.autoindex != 0)
         {
             std::cout << B_CYAN << "[GET] Generating directory listing" << RESET << std::endl;
@@ -248,7 +236,7 @@ HttpResponse GetHandler :: handle(const HttpRequest &req, const LocationConfig& 
             return (response);
         }
         
-        // 4.3 Si no hay index ni autoindex, retornar 403
+        
         std::cout << RED << "[GET] No index and autoindex off" << RESET << std::endl;
         response.statusCode = 403;
         response.headers["Content-Type"] = "text/html";
@@ -256,7 +244,7 @@ HttpResponse GetHandler :: handle(const HttpRequest &req, const LocationConfig& 
         return response;
     }
     
-    // 5. Es un archivo normal, servirlo
+    
     std::cout << B_CYAN << "[GET] Serving file: " << RESET << filePath << std::endl;
     
     response.statusCode = 200;

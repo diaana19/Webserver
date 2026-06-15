@@ -1,17 +1,4 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   CGIExecutor.cpp                                    :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: dirituay <dirituay@student.42.fr>          +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/02/26 10:42:45 by dianarituay       #+#    #+#             */
-/*   Updated: 2026/03/23 12:26:18 by dirituay         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "CGIExecutor.hpp"
-
 
 CGIExecutor :: CGIExecutor()
 {}
@@ -71,7 +58,7 @@ pid_t CGIExecutor :: execute( const HttpRequest& request, std::string scriptPath
         std::cerr << RED << "[GCIExecutor] Fork Failed" << RESET << strerror(errno) << std::endl;
         return -1;
     }
-    if(pid == 0) //CHILD
+    if(pid == 0) 
     {
         std::cout << B_CYAN << "[CGIExecutor] Im the child process" << RESET << std::endl;
         close(pipeIn[1]);
@@ -95,7 +82,7 @@ pid_t CGIExecutor :: execute( const HttpRequest& request, std::string scriptPath
         }
         close(pipeOut[1]);
         fcntl(STDOUT_FILENO, F_SETFL, 0);
-        //In case close all 
+        
         for(int fd =3; fd < 1024; fd++)
             close(fd);
 
@@ -106,7 +93,7 @@ pid_t CGIExecutor :: execute( const HttpRequest& request, std::string scriptPath
                 std::cerr << RED << "[CGIExecutor] chdir failed: " << RESET << strerror(errno) << std::endl;
                 exit(1);
             }
-          //  scriptPath = scriptPath.substr(dir.size() + 1, scriptPath.size() - dir.size());
+          
           scriptPath = scriptPath.substr(pos+1);
         }
         char** argv = buildArgv(interpreter, scriptPath);
@@ -123,22 +110,9 @@ pid_t CGIExecutor :: execute( const HttpRequest& request, std::string scriptPath
        
         close(pipeIn[0]);
         close(pipeOut[1]);
-
-        //fcntl(pipeIn[1], F_SETFL, O_NONBLOCK);
-        //if (!request.body.empty()) {
-            //ssize_t written = write(pipeIn[1], request.body.c_str(), request.body.size());
-            //if(written < 0) {
-                //std::cerr << "[CGIExecutor] Write to pipe failed " << strerror(errno) << std::endl;
-            //}
-        //}
-
-        //close(pipeIn[0]);
-        //close(pipeIn[1]);
-        //close(pipeOut[1]);
         std::cout << B_CYAN << "[CGIExecutor] Im the parent process: " << RESET << pid << std::endl;
         return pid;
     }
     std::cout << B_CYAN << "CGIExecutor : Interpreter : " << RESET << interpreter << std::endl;
     return -1;
 }
-

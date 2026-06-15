@@ -1,18 +1,6 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   CGIExecutor.hpp                                    :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: vali <vali@student.42.fr>                  +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/02/26 10:41:41 by dianarituay       #+#    #+#             */
-/*   Updated: 2026/03/17 23:14:41 by vali             ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #pragma once
-#include <unistd.h> //fork, execve, pipes
-#include <sys/types.h> //pid_t
+#include <unistd.h>
+#include <sys/types.h>
 #include <string>
 #include <iostream>
 #include <cerrno>
@@ -21,7 +9,7 @@
 #include <stdio.h>
 #include <unistd.h>
 #include <stdlib.h>
-#include <sys/resource.h> // rlimit getrlimit
+#include <sys/resource.h>
 
 #include "CGIPipes.hpp"
 #include "HttpRequest.hpp"

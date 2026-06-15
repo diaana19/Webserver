@@ -1,15 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   RequestState.hpp                                   :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: vali <vali@student.42.fr>                  +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/01/28 10:10:56 by dianarituay       #+#    #+#             */
-/*   Updated: 2026/03/12 19:48:55 by vali             ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #pragma once
 #ifndef REQUESTSTATE_HPP
 # define  REQUESTSTATE_HPP
@@ -51,53 +39,33 @@ class RequestState {
    public:
         std::string response;
         time_t lastActive;
-        
         RequestState();
         ~RequestState();
-        
         RequestState(const RequestState&copy);
         RequestState &operator=(const RequestState &copy);
-
         std::string& getBuffer();
         std::string getBuffer() const;
-
         std::string& getBufferChunked();
         std::string getBufferChunked() const;
         void setBufferChunked(std::string key);
-
         std::string& getHeader();
         std::string getHeader() const;
-        
         std::string& getBody();
         std::string getBody() const;
-
         void setStatus(int status);
         int getStatus() const;
-
-       void setHeader(std::string header);
-       void setBody(std::string body);
-
+        void setHeader(std::string header);
+        void setBody(std::string body);
         size_t getContentLength() const;
         void setContentLength(size_t key);
-
         size_t getReadLengthChunked() const;
         void setReadLengthChunked(size_t key);
-
         bool checkIfFinishReadingBody(std::string contentLengthReq);
-
         bool getHasFinishReadHeader() const;
         void setHasFinishReadHeader(bool key);
-
-        // bool getHasConstructMessage() const;
-        // void setHasConstructMessage(bool key);
-
-        // bool getHasExpect100() const;
-        // void setHasExpect100(bool key);
-
         void setRequestHttp(const HttpRequest& httpRequest);
         HttpRequest& getHttpRequest() ;
         HttpRequest getHttpRequest() const;
-
         void setHttpResponse(const HttpResponse& httpResponse);
         HttpResponse& getHttpResponse() ;
         HttpResponse getHttpResponse() const;

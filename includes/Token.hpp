@@ -1,15 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   Token.hpp                                          :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: dianarituay <dianarituay@student.42.fr>    +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/01/23 17:39:46 by dianarituay       #+#    #+#             */
-/*   Updated: 2026/01/23 17:39:49 by dianarituay      ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #pragma once
 
 #include <string.h>
@@ -39,9 +27,9 @@ enum TokenType {
 	TOKEN_NUMBER,
 	TOKEN_PATH,
 
-	TOKEN_LBRACE,   // {
-	TOKEN_RBRACE,   // }
-	TOKEN_SEMICOLON,// ;
+	TOKEN_LBRACE,   
+	TOKEN_RBRACE,   
+	TOKEN_SEMICOLON,
 	TOKEN_EOF,
 	TOKEN_UNKNOWN,
 
@@ -49,7 +37,6 @@ enum TokenType {
 	TOKEN_CGI_EXT
 };
 
-//Auxiliar function x read
 std::string readFile(const std::string& filename);
 
 struct Token {
@@ -57,7 +44,6 @@ struct Token {
 	std::string value;
 	int line;
 
-	//constructor x incicializacion
 	Token() : type(TOKEN_UNKNOWN), value(""), line(0)
 	{}
 	Token(TokenType t, const std::string& v, int l) : type(t), value(v), line(l) {}

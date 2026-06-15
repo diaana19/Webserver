@@ -1,15 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   BodyParser.hpp                                     :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: vali <vali@student.42.fr>                  +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/02/02 12:57:29 by dianarituay       #+#    #+#             */
-/*   Updated: 2026/02/10 06:24:36 by vali             ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #pragma once
 # ifndef BODYPARSER_HPP
 # define BODYPARSER_HPP
@@ -21,6 +9,7 @@
 # include <fstream>
 # include <sstream>
 # include <cstdlib>
+
 class BodyParser
 {
 	private:	
@@ -37,6 +26,5 @@ class BodyParser
 
 		void parseBody(std::string &str, HttpRequest & httpReq);
 };
-
 
 #endif

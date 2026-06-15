@@ -1,22 +1,10 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   ClientManager.cpp                                  :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: dianarituay <dianarituay@student.42.fr>    +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/01/18 19:30:53 by dianarituay       #+#    #+#             */
-/*   Updated: 2026/01/23 17:25:20 by dianarituay      ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "ClientManager.hpp"
 #include "Colors.hpp"
 #include <iostream>
-#include <cstring> //strerror
-#include <cerrno> //errno
-#include <netinet/in.h> // inet_addstrlen
-#include <arpa/inet.h> // inet_ntop
+#include <cstring> 
+#include <cerrno> 
+#include <netinet/in.h> 
+#include <arpa/inet.h> 
 #include <sys/socket.h>
 #include <unistd.h>
 
@@ -29,7 +17,7 @@ ClientManager::~ClientManager()
 {
 	for (std::map<int, Client>::iterator it = _clients.begin(); it != _clients.end(); ++it)
 	{
-		close (it->first); // cada vez q avanza va cerrando los (fds)
+		close (it->first); 
 	}
 	std::cout << B_CYAN << "[SERVER]" << RESET << " ClientManager destroyed" << std::endl;
 }
@@ -39,28 +27,28 @@ int ClientManager::make_socket_non_blocking(int fd)
 	return (fcntl(fd, F_SETFL, O_NONBLOCK));
 };
 
-//guarda el nuevo cliente, accept()
+
 int ClientManager::acceptNewClient(int serverFd)
 {
-	struct sockaddr_in clientAddr; //struc para almacenar la info del cliente
-	socklen_t clientAddrlen = sizeof(clientAddr); // accept() tiene q saber la size de la struct
+	struct sockaddr_in clientAddr; 
+	socklen_t clientAddrlen = sizeof(clientAddr); 
 
 	int clientFd = accept(serverFd, (struct sockaddr*)&clientAddr, &clientAddrlen);
 	if (clientFd == -1)
 	{
-		// if (errno == EAGAIN || errno == EWOULDBLOCK)
-        //    return (-1); //si no hay clientes, try again
+		
+        
 		std::cerr << "accept: " << strerror(errno) << std::endl;
 		return (-1); 
 	}
 	make_socket_non_blocking(clientFd);
-	char clientIP[INET_ADDRSTRLEN]; //como clientIp[16] pq IPv4 necesita 16 bytes
-	inet_ntop(AF_INET, &clientAddr.sin_addr, clientIP, INET_ADDRSTRLEN); //IP en binario
+	char clientIP[INET_ADDRSTRLEN]; 
+	inet_ntop(AF_INET, &clientAddr.sin_addr, clientIP, INET_ADDRSTRLEN); 
 	
-	int clientPort = ntohs(clientAddr.sin_port); //convierte la port al formato del CPU
+	int clientPort = ntohs(clientAddr.sin_port); 
 	_clients.insert(std::make_pair(clientFd, Client(clientFd, std::string(clientIP), clientPort)));
 
-	//debug
+	
 	std::cout << std::endl;
 	std::cout << RED << "✓ New client connected:" << RESET << std::endl;
     std::cout << "  FD:   " << clientFd << std::endl;
@@ -71,7 +59,7 @@ int ClientManager::acceptNewClient(int serverFd)
 	return (clientFd);
 }
 
-//limpia el cliente desconectado
+
 void ClientManager::removeClient(int fd)
 {
 	std::map<int, Client>::iterator it = _clients.find(fd);
@@ -102,22 +90,15 @@ size_t ClientManager::getClientCount() const
 	return _clients.size();
 }
 
-//busca un cliente por su fd y devuelve un puntero a ese cliente
 Client* ClientManager::getClient(int fd)
 {
 	std::map<int, Client>::iterator it = _clients.find(fd);
 	if (it != _clients.end())
-		return &(it->second); //retorna el  puntero al cliente
+		return &(it->second); 
 	return (NULL);
 }
 
-//verifica si un fd esta en el map de clientes
 bool ClientManager::hasClient(int fd) const
 {	
-	return (_clients.find(fd) != _clients.end()); // si existe o no en el map
+	return (_clients.find(fd) != _clients.end()); 
 }
-
-
-/* => cast a (struct sockaddr*) pq accept() espera un puntero a struct sockaddr
-pero puse struct sockadd_in (q es especifico para IPv4)
-*/

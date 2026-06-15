@@ -1,15 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   HeadersBuilder.cpp                                 :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: dianarituay <dianarituay@student.42.fr>    +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/02/01 17:33:16 by dianarituay       #+#    #+#             */
-/*   Updated: 2026/03/19 12:31:10 by vali             ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "HeadersBuilder.hpp"
 #include <sstream>
 #include <ctime>
@@ -24,10 +12,10 @@ HeadersBuilder::~HeadersBuilder()
 
 }
 
-//devuelve el server q identifica q software es
+
 std::string HeadersBuilder::getServerHeader()
 {
-	return ("Server: webserver/1.0\r\n"); //automatico
+	return ("Server: webserver/1.0\r\n"); 
 }
 
 std::string HeadersBuilder::intToString(int n)
@@ -39,8 +27,8 @@ std::string HeadersBuilder::intToString(int n)
 
 std::string HeadersBuilder::getDateHeader()
 {
-	time_t now = time(NULL); //tiempo actual
-	struct tm* gmt = gmtime(&now); // convierte a GMT
+	time_t now = time(NULL); 
+	struct tm* gmt = gmtime(&now); 
 	char buffer[100];
 	strftime(buffer, sizeof(buffer), "Date: %a, %d %b %Y %H:%M:%S GMT\r\n", gmt);
 	return (std::string(buffer));
@@ -52,9 +40,9 @@ std::string HeadersBuilder::build(const HttpResponse& response)
 	
 	for (std::map<std::string, std::string>::const_iterator it = response.headers.begin(); it != response.headers.end(); ++it)
 	{
-		headers += it->first + ": " + it->second + "\r\n"; //accedemos al nombre del header y al valor
+		headers += it->first + ": " + it->second + "\r\n"; 
 	}
-	//content-length automatico
+	
 	headers += "Content-Length: " + intToString(response.body.size()) + "\r\n";
 	
 	headers += "Connection: close\r\n";

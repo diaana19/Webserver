@@ -1,15 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   FileServer.cpp                                     :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: dianarituay <dianarituay@student.42.fr>    +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/03/07 18:05:41 by dianarituay       #+#    #+#             */
-/*   Updated: 2026/03/07 18:05:43 by dianarituay      ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "FileServer.hpp"
 #include <sstream>
 #include <ctime>
@@ -61,7 +49,7 @@ std::string FileServer :: getLastModified(const std::string &path)
     if(stat(path.c_str(), &buffer) != 0)
         return "";
 
-    //Format : "Mon, day month year hour GTM etccccccc"
+    
     char timeStr[100];
     struct tm* timeinfo = gmtime(&buffer.st_mtime);
     strftime(timeStr, sizeof(timeStr), "%a, %d %b %Y %H:%M:%S GMT", timeinfo);
@@ -94,7 +82,7 @@ std::string FileServer :: readBinaryFile(const std::string &path)
         return ""; 
     }
 
-    //read the file in memory
+    
     std::stringstream buffer;
     buffer << file.rdbuf();
     file.close();
@@ -104,34 +92,34 @@ std::string FileServer :: readBinaryFile(const std::string &path)
 
 std::string FileServer :: readFile(const std::string &path)
 {
-    //verify the existence
+    
     if(!fileExist(path))
     {
         std::cerr << "[FileServer] File not found : " << path << std::endl;
         return "";
     }
 
-    //permisions of read
+    
     if(!hasPermission(path))
     {
         std::cerr << "[FileServer] No read permission: " << path << std::endl;
         return "";
     }
 
-    //no directory
+    
     if(isDirectory(path))
     {
         std::cerr << "[FileServer] Path is a directory : " << path << std::endl;
         return ""; 
     }
 
-    //if is or nope binary
+    
     std::string extension;
     size_t dotPos = path.find_last_of('.');
     if(dotPos != std::string::npos)
         extension = path.substr(dotPos);
 
-    //binary connus
+    
     if(extension == ".png" || extension == ".jpg" || extension == ".jpeg" ||
        extension == ".gif" || extension == ".ico" || extension == ".pdf" ||
        extension == ".zip" || extension == ".tar" || extension == ".gz")
@@ -140,7 +128,7 @@ std::string FileServer :: readFile(const std::string &path)
             return readBinaryFile(path);
        }
 
-       //fileeee
+       
        std::cout << "[Fileserver] Reading text file: " << path << std::endl;
        return readTextFile(path);
 }

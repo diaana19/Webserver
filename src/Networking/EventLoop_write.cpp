@@ -1,15 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   EventLoop_write.cpp                                :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: vali <vali@student.42.fr>                  +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/01/19 13:16:13 by dirituay          #+#    #+#             */
-/*   Updated: 2026/03/22 22:58:36 by vali             ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "EventLoop.hpp"
 
 std::string EventLoop::constructResponse(HttpResponse &httpResponse, const ServerConfig &serverConfig){
@@ -30,14 +18,8 @@ std::string EventLoop::constructResponse(HttpResponse &httpResponse, const Serve
 
 ssize_t EventLoop::sendMessage(int fd, std::string &response) {
 	ssize_t sent = send(fd, response.c_str(), response.length(), 0);
-	// std::cout << "message to client:\n" << response << std::endl;
+	
 	std::cout << GREEN << "Send message to client fd: " << RESET << fd << std::endl;
-	// if (sent == -1) {
-	// 	std::cout << "Error to send to client" << std::endl;
-	// 	perror("	:");
-    //     removeClient(fd);
-    //     return;
-    // }
 	return (sent);
 };
 
@@ -52,7 +34,7 @@ void EventLoop::handleWrite(int fd) {
 	}
 
 	ssize_t sendedSsize= sendMessage(fd, reqState.response);
-	// sendMessage(fd, reqState.response);
+	
 	if (sendedSsize <= 0) {
 		if (sendedSsize == -1) {
 			removeClient(fd);

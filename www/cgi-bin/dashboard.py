@@ -4,7 +4,6 @@ import os
 print("Content-Type: text/html")
 print()
 
-# Leer cookies
 cookie_header = os.environ.get('HTTP_COOKIE', '')
 cookies = {}
 for cookie in cookie_header.split('; '):
@@ -16,7 +15,6 @@ session_id = cookies.get('session_id', '')
 username = cookies.get('username', 'Guest')
 
 if session_id:
-    # Usuario autenticado
     print(f"""
     <!DOCTYPE html>
     <html>

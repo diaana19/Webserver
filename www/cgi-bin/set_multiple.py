@@ -4,11 +4,9 @@ import sys
 
 print("Content-Type: text/html")
 
-# Leer POST data
 content_length = int(os.environ.get('CONTENT_LENGTH', 0))
 post_data = sys.stdin.read(content_length) if content_length > 0 else ""
 
-# Parsear datos
 params = {}
 for pair in post_data.split('&'):
     if '=' in pair:
@@ -19,7 +17,6 @@ name = params.get('name', 'Anonymous')
 email = params.get('email', 'no-email')
 age = params.get('age', '0')
 
-# Establecer 3 cookies
 print(f"Set-Cookie: user_name={name}; Path=/; Max-Age=3600")
 print(f"Set-Cookie: user_email={email}; Path=/; Max-Age=3600")
 print(f"Set-Cookie: user_age={age}; Path=/; Max-Age=3600")

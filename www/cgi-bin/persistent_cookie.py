@@ -3,7 +3,6 @@ import time
 
 print("Content-Type: text/html")
 
-# Cookie que dura 30 días
 timestamp = int(time.time())
 print(f"Set-Cookie: persistent_id={timestamp}; Path=/; Max-Age=2592000")
 print()

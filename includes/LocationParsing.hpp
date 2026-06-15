@@ -1,15 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   LocationParsing.hpp                                :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: vali <vali@student.42.fr>                  +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/01/23 17:40:35 by dianarituay       #+#    #+#             */
-/*   Updated: 2026/03/19 18:54:07 by vali             ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #pragma once
 
 #ifndef LOCATIONPARSING_HPP
@@ -17,7 +5,7 @@
 
 # include <iostream>
 # include <vector>
-# include <stdlib.h>     /* atoll */
+# include <stdlib.h>   
 
 # include "Config.hpp"
 # include "Token.hpp"
@@ -47,12 +35,8 @@ class LocationParsing{
 		LocationParsing();
 		~LocationParsing();
 
-		LocationConfig getLocationConfig() const; // return a copy locationConfig when it's done 
-
-		//use this to start parsing token
+		LocationConfig getLocationConfig() const;
 		void parseLocation(std::vector<Token>::const_iterator& it);
-		
-		// get the last position of the vector Token
 		size_t actualizePos(const std::vector<Token> &tokens);
 		void resetLocationConfig();
 };

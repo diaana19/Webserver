@@ -1,15 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   ServerParsing.cpp                                  :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: dianarituay <dianarituay@student.42.fr>    +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/01/24 21:47:14 by dianarituay       #+#    #+#             */
-/*   Updated: 2026/02/13 16:18:00 by dianarituay      ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "ServerParsing.hpp"
 #include <stdexcept>
 #include <cstdlib>
@@ -29,19 +17,19 @@ std::string ServerParsing::intToString(int n)
 {
 	std::stringstream ss;
 	ss << n;
-	return (ss.str()); //asi obtenemos el str
+	return (ss.str()); 
 }
-//verifica q el sgt token es un ; y la pos++ en el sgt token
+
 void ServerParsing::skipSemicolon(const std::vector<Token>& tokens, size_t& pos)
 {
-	if (pos >= tokens.size()) //si pos es <= al vector, accede a lugar inexiste
+	if (pos >= tokens.size()) 
 		throw std::runtime_error("Error: unexpected end of file");
 	if (tokens[pos].type != TOKEN_SEMICOLON)
-		throw std::runtime_error("Error line " + intToString(tokens[pos].line) + ": it was expected ';'"); //convierte number line a str, 5 a "5"
+		throw std::runtime_error("Error line " + intToString(tokens[pos].line) + ": it was expected ';'"); 
 	pos++;
 }
 
-//verifica cualquier tipo de token
+
 void ServerParsing::expectToken(const std::vector<Token> &tokens, size_t &pos, TokenType expected)
 {
 	if (pos >= tokens.size())
@@ -50,23 +38,23 @@ void ServerParsing::expectToken(const std::vector<Token> &tokens, size_t &pos, T
 		throw std::runtime_error("Error line: " + intToString(tokens[pos].line) + ": unexpected token");
 }
 
-//parsear listen 8080; c_str(atoi recibe const char *)
+
 int ServerParsing::parsePort(const std::vector<Token>& tokens, size_t& pos)
 {
 	if (tokens[pos].type == TOKEN_LISTEN)
 		pos++;
 	expectToken(tokens, pos, TOKEN_NUMBER);
-	int line = tokens[pos].line; //guardar la linea para los throw
-	std::string portStr = tokens[pos].value; //leer valor del token
+	int line = tokens[pos].line; 
+	std::string portStr = tokens[pos].value; 
 	int port = atoi(portStr.c_str());
 	pos++;
 	skipSemicolon(tokens, pos);
-	if (port < 1 || port > 65535) //valida rango
+	if (port < 1 || port > 65535) 
 		throw std::runtime_error("Error line: " + intToString(line) + ": port out of range(1-65535)");
 	return (port);
 }
 
-//TOKEN_HOST/ TOKEN_STRING o TOKEN_NUMBER "127.0.0.1"
+
 std::string ServerParsing::parseHost( const std::vector<Token>& tokens, size_t& pos)
 {
 	if(tokens[pos].type == TOKEN_HOST)
@@ -90,7 +78,7 @@ static bool isDirectory(const std::string &path) {
     return S_ISDIR(info.st_mode);
 }
 
-//docs/fusion_web/;
+
 std::string ServerParsing::parseRoot(const std::vector<Token> &tokens, size_t &pos)
 {
 	if (tokens[pos].type == TOKEN_ROOT)
@@ -100,13 +88,13 @@ std::string ServerParsing::parseRoot(const std::vector<Token> &tokens, size_t &p
 		throw std::runtime_error("Error line " + intToString(tokens[pos].line) + ": expected root path");
 
 	std::string root = tokens[pos].value;
-	//ADD NEW CORRECTION 
+	
 	int line = tokens[pos].line;
 
 	pos++;
 	skipSemicolon(tokens, pos);
 	
-	//ADD FOR validation
+	
 	if(!isDirectory(root))
 		throw std::runtime_error("Error line " + intToString(line) + ": invalid root directory " + root);
 	
@@ -114,7 +102,7 @@ std::string ServerParsing::parseRoot(const std::vector<Token> &tokens, size_t &p
 }
 
 
-//index.html;
+
 std::string ServerParsing::parseIndex(const std::vector<Token> &tokens, size_t &pos)
 {
 	if (tokens[pos].type == TOKEN_INDEX)
@@ -127,7 +115,7 @@ std::string ServerParsing::parseIndex(const std::vector<Token> &tokens, size_t &
 	return (index);
 }
 
-//parsea server_name localhost;
+
 std::string ServerParsing::parseServerName(const std::vector<Token>& tokens, size_t& pos)
 {
 	if (tokens[pos].type == TOKEN_SERVER_NAME)
@@ -139,22 +127,22 @@ std::string ServerParsing::parseServerName(const std::vector<Token>& tokens, siz
 	return (serverName);
 }
 
-//convierte el size de client.. a bytes
+
 size_t ServerParsing::parseClientMaxBodySize(const std::vector<Token> &tokens, size_t &pos)
 {
 	if (tokens[pos].type == TOKEN_CLIENT_MAX_BODY_SIZE)
 		pos++;
 	expectToken(tokens, pos, TOKEN_NUMBER);
 	int line = tokens[pos].line;
-	std::string value = tokens[pos].value; //"10M"
+	std::string value = tokens[pos].value; 
 	size_t number = 0;
 	size_t i = 0;
 	while (i < value.size() && isdigit(value[i]))
 	{
 		number = number * 10 + (value[i] - '0');
-		i++; //str to int
+		i++; 
 	}
-	if (i < value.size()) //ver si hay K, M, G
+	if (i < value.size()) 
 	{
 		char unit = value[i];
 		if (unit == 'K' || unit == 'k')
@@ -171,37 +159,37 @@ size_t ServerParsing::parseClientMaxBodySize(const std::vector<Token> &tokens, s
 	return (number);
 }
 
-//config. q pqg HTML mostrar cuando ocurre un error HTTP
+
 void ServerParsing::parseErrorPage(const std::vector<Token> &tokens, size_t &pos, ServerConfig &config)
 {
 	if (tokens[pos].type == TOKEN_ERROR_PAGE)
 		pos++;
-	std::vector<int> errorCodes; //vector temp para guardar los codigos
+	std::vector<int> errorCodes; 
 	while (pos < tokens.size() && tokens[pos].type == TOKEN_NUMBER)
 	{
 		int code = atoi(tokens[pos].value.c_str());
-		errorCodes.push_back(code); //guarda en el vector
+		errorCodes.push_back(code); 
 		pos++;
 	}
-	if (errorCodes.empty()) //si es vacio, error
+	if (errorCodes.empty()) 
 		throw std::runtime_error("Error line " + intToString(tokens[pos].line) + ": expected error code");
-	if (tokens[pos].type != TOKEN_PATH && tokens[pos].type != TOKEN_STRING) //lee el path
+	if (tokens[pos].type != TOKEN_PATH && tokens[pos].type != TOKEN_STRING) 
 		throw std::runtime_error("Error line " + intToString(tokens[pos].line) + ": expected error page path");
-	std::string errorPath = tokens[pos].value; //lee el token
+	std::string errorPath = tokens[pos].value; 
 	pos++;
-	for (size_t i = 0; i < errorCodes.size(); i++) //asigna el path a todos los codigos
-		config.errorPages[errorCodes[i]] = errorPath; //[500], [500, 502], ... modifica direc. en config, guarda en el map de errorPages
+	for (size_t i = 0; i < errorCodes.size(); i++) 
+		config.errorPages[errorCodes[i]] = errorPath; 
 	skipSemicolon(tokens, pos);
 }
 
-//parsea todo server{} y devuelve un serverconfig con la info
+
 ServerConfig ServerParsing::parseServer(const std::vector<Token> &tokens, size_t &pos)
 {
 	expectToken(tokens, pos, TOKEN_SERVER);
 		pos++;
 	expectToken(tokens, pos, TOKEN_LBRACE);
 		pos++;
-	ServerConfig config; //serverconfig vacio
+	ServerConfig config; 
 	while (pos < tokens.size() && tokens[pos].type != TOKEN_RBRACE)
 	{
 		std::string directive = tokens[pos].value;
@@ -237,8 +225,3 @@ ServerConfig ServerParsing::parseServer(const std::vector<Token> &tokens, size_t
    	throw std::runtime_error("Error: server block missing 'listen' directive");
 	return (config);
 }
-
-/* => 1 kilobyte -> 1024 bytes
-1 megabyte -> 1024 * 1024 bytes -> 1048576 bytes
-1 gigabyte -> 1024 * 1024 * 1024 bytes -> 1073741824 bytes
-*/

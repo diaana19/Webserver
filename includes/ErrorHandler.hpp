@@ -25,7 +25,6 @@ class ErrorHandler {
 	public :
 		ErrorHandler();
 		~ErrorHandler();
-		void constructMap();
 		std::string generate(int errorCode, const ServerConfig &serverConfig);
 };
 

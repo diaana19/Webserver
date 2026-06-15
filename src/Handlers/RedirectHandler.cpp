@@ -1,15 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   RedirectHandler.cpp                                :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: dianarituay <dianarituay@student.42.fr>    +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/02/26 10:43:26 by dianarituay       #+#    #+#             */
-/*   Updated: 2026/02/26 10:43:27 by dianarituay      ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 # include "RedirectHandler.hpp"
 RedirectHandler::RedirectHandler(){};
 RedirectHandler::~RedirectHandler(){};

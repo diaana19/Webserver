@@ -1,23 +1,4 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   BodyParser.cpp                                     :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: vali <vali@student.42.fr>                  +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/02/02 12:58:11 by dianarituay       #+#    #+#             */
-/*   Updated: 2026/03/10 18:51:54 by vali             ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "BodyParser.hpp"
-
-// bool checkIfFileInBody(httpReq & httpReq) {
-// 	if(HttpRequest.ma)
-// };
-
-// void parseBody(std::String &str, HttpRequest & httpReq) {
-// };
 
 void BodyParser::parseBody(std::string &str, HttpRequest & httpReq){
 	if (checkIfItsAFile(httpReq)) {
@@ -28,8 +9,6 @@ void BodyParser::parseBody(std::string &str, HttpRequest & httpReq){
 	else {
 		parseText(str, httpReq);
 	}
-	// JSON DECODER ?? 
-	// UTF-8  DECODER ?? 
 };
 
 bool BodyParser::checkIfItsAFile(HttpRequest &httpReq) {
@@ -63,7 +42,6 @@ void BodyParser::parseChunked(std::string &str, HttpRequest &httpReq) {
             posFilename += tmp.size();
             size_t posEndFilename = it->second.find("\"", posFilename);
             fileConfig.filename = it->second.substr(posFilename, posEndFilename - posFilename);
-            //std::cout << "Filename with ContentDisp" << fileConfig.filename << std::endl;
         }
     }
     else {
@@ -71,153 +49,17 @@ void BodyParser::parseChunked(std::string &str, HttpRequest &httpReq) {
         std::ostringstream oss;
         oss << now;
         fileConfig.filename = oss.str() + ".bin";
-       // std::cout << "Filename With time:" << fileConfig.filename << std::endl;
+       
     }
     fileConfig.file_buffer = str;
     httpReq.allFiles.push_back(fileConfig);
 };
 
-// void BodyParser::parseFile(std::string &str, HttpRequest &httpReq) {
-// 	std::istringstream streamBody(str);
-// 	std::string boundary;
-// 	std::map<std::string, std::string>::iterator it = httpReq.headers.find("boundary");
-//     if (it != httpReq.headers.end()) {
-//         boundary = it->second;
-//     }
-// 	std::string line;
-// 	File fileConfig;
-// 	while(getline(streamBody, line)) {
-// 		if (line.find("Content-Disposition:") != std::string::npos) {
-// 			line = line.substr(line.find(':') + 2);
-// 			// std::cout << "Content-Disposition" << std::endl;
-// 			std::istringstream streamLine(line);
-// 			std::string word;
-// 			std::ostringstream bodyStrm;
-// 			while(getline(streamLine, word, ' ')) {
-// 				// std::cout << "word[" << word << "]　　" << std::endl;
-// 				if (word.find("name") == 0) {
-// 					// std::cout << "NAME FOUND:" << std::endl;
-// 					int start = word.find('"') + 1;
-// 					std::string name = word.substr(start, word.size() - start - 2);
-// 					fileConfig.filename = name;
-// 					if(httpReq.allFiles)
-// 					// std::cout << name << std::endl;
-// 				}
-// 				if (word.find("filename") == 0) {
-// 					// std::cout << "FILENAME FOUND" << std::endl;
-// 					int start = word.find('"') + 1;
-// 					std::string filename = word.substr(start, word.size() - start - 2);
-// 					fileConfig.filename =filename;
-// 					// std::cout << filename << std::endl;
-// 				}
-// 			}
-// 		}
-// 		std::string buffer;
-// 		if (line.empty() || line == "\r"){  // empty line before the file 
-// 			// std::cout << "EMPTY FOUND:" << std::endl;
-// 			while (true) {
-// 				getline(streamBody, line);
-// 				if (line == "\r")
-// 					break ;
-// 				else if (!(boundary.empty()) && line.find(boundary) != std::string::npos) {
-// 					// std::cout << "getMultForm_separator FOUND:" << std::endl;
-// 					buffer = buffer.substr(0, buffer.size() - 1); // this remove the \n or \r of the file !!
-// 					break ;
-// 				}
-// 				else
-// 					buffer += line + '\n';  // we can directly read the file since its a getline so it's stop by line
-// 			}
-// 			fileConfig.file_buffer += buffer;
-// 			httpReq.allFiles.push_back(fileConfig);
-			
-// 			std::ofstream ofs((fileConfig.filename + "out").c_str(), std::ios::binary);
-// 			if (!ofs) {
-// 			    std::cerr << "Failed to open output file: " << fileConfig.filename << std::endl;
-// 			} else {
-// 			    ofs.write(fileConfig.file_buffer.c_str(), fileConfig.file_buffer.size());
-// 			    ofs.close();
-// 			}
-// 			fileConfig = File();
-// 		}
-// 		// bodyStrm << line << "\n";
-// 	}
-// };
-
-// void BodyParser::parseFile(std::string &str, HttpRequest &httpReq) {
-// 	std::istringstream streamBody(str);
-// 	std::string line;
-// 	std::string boundary;
-// 	File fileConfig;
-
-// 	std::map<std::string, std::string>::iterator it = httpReq.headers.find("boundary");
-// 	if (it != httpReq.headers.end()) {
-// 		boundary = it->second;
-//     }
-
-// 	while(getline(streamBody, line)) {
-// 		std::cout << " line[" << line << "]" << std::endl;
-// 		size_t namePos = line.find("name=\"");
-//     	if (namePos != std::string::npos) {
-// 			namePos += 6;
-// 			size_t nameEnd = line.find('"', namePos);
-// 			fileConfig.name = line.substr(namePos, nameEnd - namePos);
-// 		}
-//    		 size_t filenamePos = line.find("filename=\"");
-//    		 if (filenamePos != std::string::npos) {
-// 			filenamePos += 10;
-// 			size_t filenameEnd = line.find('"', filenamePos);
-// 			fileConfig.filename = line.substr(filenamePos, filenameEnd - filenamePos);
-// 			std::cout << "  Filename extracted: '" << fileConfig.filename << "'" << std::endl;
-// 		}
-// 		if (line.find("Content-Type:") != std::string::npos) {
-// 			// std::cout << "CONTENT TYPE FOUND:" << std::endl;
-// 			int start = line.find(':') + 2;
-// 			std::string contentTypestr = line.substr(start, line.size() - start - 1);
-// 			fileConfig.contentType = contentTypestr;
-// 			// std::cout << "contentType:" << contentTypestr << std::endl;
-// 		}
-// 		std::string buffer;
-// 		if (line.empty() || getline(streamBody, line)){  // empty line before the file 
-// 			// std::cout << "EMPTY FOUND:" << std::endl;
-// 			while (getline(streamBody, line)) {
-// 				if (line == "\r")
-// 					break ;
-// 				// else if (!(boundary.empty()) && line.find(boundary) != std::string::npos) {
-// 				// 	// std::cout << "getMultForm_separator FOUND:" << std::endl;
-// 				// 	buffer = buffer.substr(0, buffer.size()); // this remove the \n or \r of the buffer !!
-// 				// 	break ;
-// 				// }
-// 				else if (line.find("--------") != std::string::npos) {
-// 					buffer = buffer.substr(0, buffer.size() - 2); // this remove the \n or \r of the buffer !!
-// 					break ;
-// 				}
-// 				else
-// 					buffer += line + '\n';  // we can directly read the file since its a getline so it's stop by line
-// 			}
-// 			fileConfig.file_buffer = buffer;
-// 			httpReq.allFiles.push_back(fileConfig);
-// 			fileConfig = File();
-// 			buffer.clear();
-// 			// test if file is corretly parsed
-// 			std::cout <<  "\033[1m\033[31m"  << buffer <<  "\033[0m" << std::endl;
-// 			std::ofstream ofs((fileConfig.filename + "out").c_str(), std::ios::binary);
-// 			if (!ofs) {
-// 			    std::cout << "Failed to open output file: " << fileConfig.filename << std::endl;
-// 			} else {
-// 			    std::cout << "Succesfully to open output file: " << fileConfig.filename << std::endl;
-// 			    ofs.write(fileConfig.file_buffer.data(), fileConfig.file_buffer.size());
-// 			    ofs.close();
-// 			}
-// 		}
-// 		// bodyStrm << line << "\n";
-// 	}
-// };
-
 void BodyParser::parseFile(std::string &str, HttpRequest &httpReq) {
     std::string boundary;
     std::map<std::string, std::string>::iterator it = httpReq.headers.find("Content-Type");
     if (it != httpReq.headers.end()) {
-		// std::cout << "the line " << it->second << std::endl;
+		
 		size_t pos = it->second.find("boundary");
 		if (pos != std::string::npos)
         	boundary = it->second.substr((pos + 9), it->second.size());
@@ -236,10 +78,7 @@ void BodyParser::parseFile(std::string &str, HttpRequest &httpReq) {
             line = str.substr(pos, lineEnd - pos);
             pos = lineEnd + 2;
         }
-
-        //std::cout << " line[" << line << "]" << std::endl;
-
-        // --- parse Content-Disposition header ---
+        
         size_t namePos = line.find("name=\"");
         if (namePos != std::string::npos) {
             namePos += 6;
@@ -261,7 +100,7 @@ void BodyParser::parseFile(std::string &str, HttpRequest &httpReq) {
         if (line.find("Content-Type:") != std::string::npos) {
             size_t start = line.find(':');
             if (start != std::string::npos) {
-                start += 2; // skip the ": "
+                start += 2; 
                 fileConfig.contentType = line.substr(start);
             }
         }
@@ -300,18 +139,6 @@ void BodyParser::parseFile(std::string &str, HttpRequest &httpReq) {
             }
             fileConfig.file_buffer = buffer;
             httpReq.allFiles.push_back(fileConfig);
-
-            // std::string outName = fileConfig.filename + "out";
-            // std::ofstream ofs(outName.c_str(), std::ios::binary);
-            // if (!ofs) {
-            //     std::cout << "Failed to open output file: " << outName << std::endl;
-            // } else {
-            //     std::cout << "Successfully opened output file: " << outName << std::endl;
-            //     ofs.write(fileConfig.file_buffer.data(),
-            //               static_cast<std::streamsize>(fileConfig.file_buffer.size()));
-            //     ofs.close();
-            // }
-
             fileConfig = File();
         }
     }

@@ -2,7 +2,7 @@
 import http.client
 
 HOST = "127.0.0.1"
-PORT = 8080   # change to your server port
+PORT = 8080
 
 def delete_file(path):
     conn = http.client.HTTPConnection(HOST, PORT)

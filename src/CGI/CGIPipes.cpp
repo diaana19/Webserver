@@ -1,15 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   CGIPipes.cpp                                       :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: dianarituay <dianarituay@student.42.fr>    +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/03/01 18:51:13 by dianarituay       #+#    #+#             */
-/*   Updated: 2026/03/19 13:39:05 by dianarituay      ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 # include "CGIPipes.hpp"
 
 CGIPipes :: CGIPipes()
@@ -30,7 +18,6 @@ bool CGIPipes::setupPipes(int pipeIn[2], int pipeOut[2]) {
     return true;
 }
 
-
 std::string CGIPipes::readOutputNonBlocking(int fd) {
     char buffer[4096];
     std::string output;
@@ -43,7 +30,7 @@ std::string CGIPipes::readOutputNonBlocking(int fd) {
         std::cout << YELLOW << "All bytes read" << RESET << std::endl;
     }
 
-    return (output); // devuelve lo que se leyó hasta ahora
+    return (output); 
 }
 
 void CGIPipes :: killIfTimeout(pid_t pid, int timeoutSeconds)
@@ -52,19 +39,19 @@ void CGIPipes :: killIfTimeout(pid_t pid, int timeoutSeconds)
 
     while(true)
     {
-        //look if still continue process without blocking
+        
         int status;
         pid_t result = waitpid(pid, &status, WNOHANG);
     
         if(result == pid)
-            return; //the rpocess finish normally
+            return; 
         else if(result < 0)
             throw std::runtime_error("waitpid() failed");
 
-        //check the timeout
+        
         if(time(NULL) - start >= timeoutSeconds)
         {
-            //execd the time kill the process
+            
             kill(pid, SIGTERM);
             usleep(100000);
 

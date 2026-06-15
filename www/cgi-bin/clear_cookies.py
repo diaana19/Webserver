@@ -3,7 +3,6 @@ import os
 
 print("Content-Type: text/html")
 
-# Leer todas las cookies actuales
 cookie_header = os.environ.get('HTTP_COOKIE', '')
 cookies = []
 
@@ -12,7 +11,6 @@ for cookie in cookie_header.split(';'):
         key = cookie.strip().split('=', 1)[0]
         cookies.append(key)
 
-# Borrar todas las cookies
 for cookie_name in cookies:
     print(f"Set-Cookie: {cookie_name}=; Path=/; Max-Age=0")
 

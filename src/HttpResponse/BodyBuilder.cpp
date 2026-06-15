@@ -1,15 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   BodyBuilder.cpp                                    :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: vali <vali@student.42.fr>                  +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/02/26 10:43:35 by dianarituay       #+#    #+#             */
-/*   Updated: 2026/03/04 19:49:01 by vali             ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "BodyBuilder.hpp"
 
 std::string BodyBuilder::convertNumberIntoString(int nb) {
@@ -18,7 +6,7 @@ std::string BodyBuilder::convertNumberIntoString(int nb) {
 	std::string lineNb = oss.str();
 	return (lineNb);
 }
-// taken from HeaderBuilder
+
 BodyBuilder::BodyBuilder(){
 }
 

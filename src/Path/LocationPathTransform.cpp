@@ -1,25 +1,8 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   LocationPathTransform.cpp                          :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: dianarituay <dianarituay@student.42.fr>    +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/02/26 10:43:55 by dianarituay       #+#    #+#             */
-/*   Updated: 2026/02/26 10:43:56 by dianarituay      ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "LocationPathTransform.hpp"
 
 void LocationPathTransform::changeLocationRoot(std::string &serverRoot, LocationConfig& location) {
 	if (location.rootLocation.empty()) {
 		location.rootLocation = serverRoot;
-		// std::string tmp = serverRoot;
-		// if (tmp.size() > 0 && tmp[tmp.size() - 1] != '/')
-		// 	tmp += "/";
-		// if ()
-		// location.rootLocation = serverRoot + location.uri;
 	}
 };
 

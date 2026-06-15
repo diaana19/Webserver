@@ -1,15 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   CookieParser.cpp                                   :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: dianarituay <dianarituay@student.42.fr>    +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/03/19 13:38:48 by dianarituay       #+#    #+#             */
-/*   Updated: 2026/03/19 13:38:50 by dianarituay      ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "CookieParser.hpp"
 #include <sstream>
 #include <cctype>
@@ -19,7 +7,7 @@ CookieParser :: ~CookieParser() {}
 
 std::string CookieParser::trim(const std::string &str)
 {
-    //new trim uhm
+    
     size_t start = 0;
     size_t end = str.length();
 
@@ -37,7 +25,7 @@ std::pair <std::string, std::string> CookieParser :: parseCookiePair(const std::
     
     if(equalPos == std::string::npos)
     {
-        //dont have '=' bad cookie
+        
         std::cerr << RED << "[CookieParser] Invalid cookie pair: " << RESET << pair << std::endl;
         return std::make_pair("", "");
     }
@@ -59,12 +47,12 @@ std::map <std::string, std::string> CookieParser :: parse(const std::string &coo
 
     std::cout << B_CYAN << "[CookieParser] Parsing: " << RESET << cookieHeader << std::endl;
 
-    //separate by point and ;
+    
     std::istringstream stream(cookieHeader);
     std::string pair;
 
     while(std::getline(stream, pair, ';')) {
-        //parse values
+        
         std::pair <std::string, std::string> cookie = parseCookiePair(pair);
 
         if(!cookie.first.empty()) {

@@ -1,15 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   DirectoryLister.cpp                                :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: dianarituay <dianarituay@student.42.fr>    +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/03/07 18:10:26 by dianarituay       #+#    #+#             */
-/*   Updated: 2026/03/07 18:26:57 by dianarituay      ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "DirectoryLister.hpp"
 #include <iostream>
 #include <algorithm>
@@ -22,20 +10,20 @@ DirectoryLister::~DirectoryLister()
 {
 }
 
-//verifica si es directory
+
 bool DirectoryLister::isDirectory(const std::string &path)
 {
 	struct stat buffer;
 
-	// stat() obtiene información del archivo
+	
 	if (stat(path.c_str(), &buffer) != 0)
 		return false;
 
-	// S_ISDIR verifica si es directorio
+	
 	return (S_ISDIR(buffer.st_mode));
 }
 
-//obtiene size del file
+
 size_t DirectoryLister::getFileSize(const std::string &path)
 {
 	struct stat buffer;
@@ -43,11 +31,11 @@ size_t DirectoryLister::getFileSize(const std::string &path)
 	if (stat(path.c_str(), &buffer) != 0)
 		return 0;
 
-	// st_size contiene el tamaño en bytes
+	
 	return (buffer.st_size);
 }
 
-// formatea el size (bytes → KB, MB, etc.)
+
 std::string DirectoryLister::formatSize(size_t bytes)
 {
 	std::ostringstream oss;
@@ -72,76 +60,55 @@ std::string DirectoryLister::formatSize(size_t bytes)
 	return (oss.str());
 }
 
-
-// Función de comparación para ordenar
-// Directorios primero, luego alfabético
 static bool compareDirEntries(const DirEntry& a, const DirEntry& b) 
 {
-    // Si uno es directorio y el otro no
-    if (a.isDirectory != b.isDirectory)
-        return a.isDirectory > b.isDirectory;  // Dirs primero
     
-    // Si ambos son del mismo tipo, ordenar alfabéticamente
+    if (a.isDirectory != b.isDirectory)
+        return a.isDirectory > b.isDirectory;  
+    
+    
     return a.name < b.name;
 }
 
-// lee contenido del directory
 std::vector<DirEntry> DirectoryLister::listDirectory(const std::string &dirPath)
 {
-	std::vector<DirEntry> entries; //files + directory
+	std::vector<DirEntry> entries; 
 
-	// Abrir directorio
 	DIR *dir = opendir(dirPath.c_str());
 	if (!dir)
 	{
 		std::cerr << "[DirectoryLister] Failed to open: " << dirPath << std::endl;
 		return entries;
 	}
-
 	struct dirent *entry;
-
-	// Leer cada entrada del directorio
 	while ((entry = readdir(dir)) != NULL)
 	{
 		std::string name = entry->d_name;
-
-		// Ignorar . y ..
 		if (name == "." || name == "..")
 			continue;
-
-		// Construir path completo
 		std::string fullPath = dirPath;
 		if (!fullPath.empty() && fullPath[fullPath.length() - 1] != '/')
 			fullPath += "/";
 		fullPath += name;
-
-		// Crear entrada
 		DirEntry dirEntry;
 		dirEntry.name = name;
 		dirEntry.isDirectory = isDirectory(fullPath);
 		dirEntry.size = dirEntry.isDirectory ? 0 : getFileSize(fullPath);
-
 		entries.push_back(dirEntry);
 	}
 
 	closedir(dir);
-
-	// Ordenar: directorios primero, luego alfabético
 	std::sort(entries.begin(), entries.end(), compareDirEntries);
-
 	return (entries);
 }
 
-//generar html con el listado
+
 std::string DirectoryLister::generateHTML(const std::string &dirPath,
 														const std::string &uri)
 {
 	std::ostringstream html;
-
-	// Obtener lista de archivos/carpetas
 	std::vector<DirEntry> entries = listDirectory(dirPath);
 
-	//header html
 	html << "<!DOCTYPE html>\n";
 	html << "<html>\n";
 	html << "<head>\n";
@@ -190,17 +157,14 @@ std::string DirectoryLister::generateHTML(const std::string &dirPath,
 	html << "</head>\n";
 	html << "<body>\n";
 
-	//titulo
 	html << "    <h1>📁 Index of " << uri << "</h1>\n";
 
-	//tabla
 	html << "    <table>\n";
 	html << "        <tr>\n";
 	html << "            <th>Name</th>\n";
 	html << "            <th>Size</th>\n";
 	html << "        </tr>\n";
 
-	//link al directory padre
 	if (uri != "/")
 	{
 		html << "        <tr>\n";
@@ -209,12 +173,10 @@ std::string DirectoryLister::generateHTML(const std::string &dirPath,
 		html << "        </tr>\n";
 	}
 
-	//listar archivos y carpetas
 	for (size_t i = 0; i < entries.size(); i++)
 	{
 		const DirEntry &entry = entries[i];
 
-		// Construir href (enlace)
 		std::string href = uri;
 		if (!href.empty() && href[href.length() - 1] != '/')
 			href += "/";
@@ -254,8 +216,7 @@ std::string DirectoryLister::generateHTML(const std::string &dirPath,
 	}
 
 	html << "    </table>\n";
-
-	//footer
+	
 	html << "    <hr>\n";
 	html << "    <p><em>webserv/1.0</em></p>\n";
 	html << "</body>\n";

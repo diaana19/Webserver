@@ -9,11 +9,9 @@ except ImportError:
 
 print("Content-Type: text/html")
 
-# Leer POST data
 content_length = int(os.environ.get('CONTENT_LENGTH', 0))
 post_data = sys.stdin.read(content_length) if content_length > 0 else ""
 
-# Parsear datos
 params = {}
 for pair in post_data.split('&'):
     if '=' in pair:
@@ -23,7 +21,6 @@ for pair in post_data.split('&'):
 item = params.get('item', 'Unknown')
 quantity = params.get('quantity', '1')
 
-# Leer cookies existentes
 cookie_header = os.environ.get('HTTP_COOKIE', '')
 cookies = {}
 for cookie in cookie_header.split(';'):
@@ -31,19 +28,15 @@ for cookie in cookie_header.split(';'):
         key, value = cookie.strip().split('=', 1)
         cookies[key] = value
 
-# Obtener cart actual
 cart = cookies.get('cart', '')
 
-# Agregar nuevo item
 if cart:
     cart += f",{item}:{quantity}"
 else:
     cart = f"{item}:{quantity}"
 
-# URL encode
 cart_encoded = quote(cart)
 
-# Establecer cookie
 print(f"Set-Cookie: cart={cart_encoded}; Path=/; Max-Age=86400")
 print()
 

@@ -1,15 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   SessionManager.cpp                                 :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: dianarituay <dianarituay@student.42.fr>    +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/03/19 13:38:09 by dianarituay       #+#    #+#             */
-/*   Updated: 2026/03/19 13:38:11 by dianarituay      ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "SessionManager.hpp"
 
 std::string SessionManager::createSession(){
@@ -26,7 +14,7 @@ std::string SessionManager::createSession(){
 	SessionData newUser;
 	sessions[id] = newUser;
 	return (id);
-};           // Génère un ID unique
+};           
 bool SessionManager::validateSession(const std::string& sessionId) {
 	std::map<std::string, SessionData>::iterator it = this->sessions.find(sessionId);
 	if (it == this->sessions.end())

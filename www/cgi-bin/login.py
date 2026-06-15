@@ -6,11 +6,9 @@ import time
 
 print("Content-Type: text/html")
 
-# Leer POST body
 content_length = int(os.environ.get('CONTENT_LENGTH', 0))
 post_data = sys.stdin.read(content_length) if content_length > 0 else ""
 
-# Parsear datos
 params = {}
 for pair in post_data.split('&'):
     if '=' in pair:
@@ -22,10 +20,8 @@ password = params.get('password', '')
 
 # Validar credenciales (hardcoded para demo)
 if username == 'admin' and password == 'secret123':
-    # Generar session ID
     session_id = hashlib.md5(f"{username}{time.time()}".encode()).hexdigest()
     
-    # Set cookie con session
     print(f"Set-Cookie: session_id={session_id}; Path=/; Max-Age=3600\r")
     print(f"Set-Cookie: username={username}; Path=/; Max-Age=3600\r")
     print("\r")

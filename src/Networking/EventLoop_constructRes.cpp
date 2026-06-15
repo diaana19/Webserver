@@ -1,15 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   EventLoop_write.cpp                                :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: vali <vali@student.42.fr>                  +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/01/19 13:16:13 by dirituay          #+#    #+#             */
-/*   Updated: 2026/03/19 12:47:21 by vali             ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "EventLoop.hpp"
 
 void EventLoop::processRequest(int fd) {
@@ -17,7 +5,7 @@ void EventLoop::processRequest(int fd) {
     HttpRequest HttpRequest = currRequestState.getHttpRequest();
     std::map<std::string, std::string>::iterator hostIt = HttpRequest.headers.find("Host");
     if (hostIt == HttpRequest.headers.end()) {
-        // Sin Host header → 400
+        
         HttpResponse httpresponse;
         httpresponse.statusCode = 400;
 		currRequestState.setHttpResponse(httpresponse);
@@ -28,7 +16,7 @@ void EventLoop::processRequest(int fd) {
 	std::pair<std::string, int> ipAndPort = getHostAndPort(hostIt->second);
 	int serverIndex = searchIndexServer(ipAndPort.first, ipAndPort.second);
 	if (serverIndex == -1) {
-		// Server no encontrado → 404
+		
 		HttpResponse httpresponse;
 		httpresponse.statusCode = 404;
 		currRequestState.setHttpResponse(httpresponse);
@@ -42,7 +30,7 @@ void EventLoop::processRequest(int fd) {
     int locationIndex = searchIndexLocation(serverConfig, HttpRequest.path);
     
     if (locationIndex == -1) {
-        // Location no encontrada → 404
+        
         HttpResponse httpresponse;
         httpresponse.statusCode = 404;
 		currRequestState.setHttpResponse(httpresponse);
@@ -57,12 +45,12 @@ void EventLoop::processRequest(int fd) {
     if (locationConfig.cgi_On) {
 		try
 		{
-			// epoll_ctl(epoll_fd, EPOLL_CTL_DEL, fd, NULL);
+			
 			turnToEventReadHUP(fd);
 			if(httpresponse.statusCode == 500) 
 				throw std::runtime_error("Error with the execution of cgi");
 			httpresponse.cgiProcess.clientFd = fd;
-			// this->runningCgis.insert(std::make_pair(httpresponse.cgiProcess.pid, httpresponse.cgiProcess));
+			
 			this->runningCgis[httpresponse.cgiProcess.pid] = httpresponse.cgiProcess; 
 			if (AddFdToEpoll(httpresponse.cgiProcess.pid, httpresponse.cgiProcess.outputPipeFd) == false) {
 				throw std::runtime_error("Error add outputPipe to epoll");

@@ -1,4 +1,3 @@
-
 # Webserv: A C++98 HTTP/1.1 Server
 
 ![C++](https://img.shields.io/badge/C++-98-blue.svg)

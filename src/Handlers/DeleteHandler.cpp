@@ -1,15 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   DeleteHandler.cpp                                  :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: dianarituay <dianarituay@student.42.fr>    +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/02/26 10:43:18 by dianarituay       #+#    #+#             */
-/*   Updated: 2026/03/01 19:24:48 by dianarituay      ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "DeleteHandler.hpp"
 #include "PostHandler.hpp"
 
@@ -45,7 +33,7 @@ bool DeleteHandler::canDelete(const std::string &pathfile) {
 	return (false);
 };
 
-// taken trom GET 
+
 std::string DeleteHandler::combinePath(const std::string &root, const std::string &uri)
 {
     std::string path = root;
@@ -68,21 +56,21 @@ HttpResponse DeleteHandler::handle(const HttpRequest &httpReq, const LocationCon
 	std::string pathfile;
 	pathfile = combinePath(location.rootLocation, httpReq.path);
 	if (!(verifyMethod(httpReq.method, location))) {
-		httpResponse.statusCode = 405; // "Method Not Allowed"
+		httpResponse.statusCode = 405; 
 	}
 	else if (pathfile.find("..") != std::string::npos) {
-		httpResponse.statusCode = 403; // forbiden
+		httpResponse.statusCode = 403; 
 	}
 	else if (!(doIsItExist(pathfile))) {
-		httpResponse.statusCode = 404; // not found
+		httpResponse.statusCode = 404; 
 	}
 	else if (!(canDelete(pathfile))) {
-		httpResponse.statusCode = 403; // forbiden
+		httpResponse.statusCode = 403; 
 	}
 	else if (!(isRemoved(pathfile))) {
-		httpResponse.statusCode = 403; // forbiden
+		httpResponse.statusCode = 403; 
 	}
 	else
-		httpResponse.statusCode = 204; // No content // OK 
+		httpResponse.statusCode = 204; 
 	return (httpResponse);
 };

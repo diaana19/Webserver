@@ -1,15 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   HttpResponse.hpp                                   :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: vali <vali@student.42.fr>                  +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/02/01 17:29:28 by dianarituay       #+#    #+#             */
-/*   Updated: 2026/03/08 19:57:53 by vali             ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #ifndef HTTPRESPONSE_HPP
 #define HTTPRESPONSE_HPP
 
@@ -22,13 +10,13 @@ struct HttpResponse
 {
 	int statusCode;
 
-	std::map<std::string, std::string> headers; //headers builder
+	std::map<std::string, std::string> headers;
 	std::vector<std::string> setCookieHeaders;
 	std::string body; 
 	CGIProcess cgiProcess;
 	
 	HttpResponse() :
-		statusCode(200), //default 200 code OK
+		statusCode(200),
 		body("")
 	{}
 };

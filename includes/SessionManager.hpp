@@ -1,15 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   SessionManager.hpp                                 :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: dianarituay <dianarituay@student.42.fr>    +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/03/19 13:39:15 by dianarituay       #+#    #+#             */
-/*   Updated: 2026/03/19 13:39:17 by dianarituay      ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #pragma once
 # ifndef SESSIONMANAGER_HPP
 # define SESSIONMANAGER_HPP
@@ -34,7 +22,7 @@ class SessionManager {
 		SessionManager(){};
 		~SessionManager(){};
     
-    std::string createSession();           // Génère un ID unique
+    std::string createSession();       
     bool validateSession(const std::string& sessionId);
     SessionData& getSession(const std::string& sessionId);
     void destroySession(const std::string& sessionId);
